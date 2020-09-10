@@ -1,0 +1,27 @@
+.thumbnail {
+  display: flex;
+  flex-direction: column;
+  /* padding-right: 2em;
+  padding-left: 2em; */
+  margin-right: 1em;
+  margin-left: 1em;
+  word-break: normal;
+  width: 25%;
+  align-items: center;
+}
+
+.thumbnail:hover {
+  background-color: rgba(10, 10, 10, 0.3);
+  transition: 0.5s;
+}
+
+.thumbnail img {
+  width: 12em;
+  height: 12em;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.2em;
+  font-style: italic;
+}
