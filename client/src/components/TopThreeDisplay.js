@@ -30,7 +30,7 @@ export default function TopThreeDisplay(props) {
       </span>
       <div className="top-three-display">
         {data.map((obj, i) => (
-          <Thumbnail data={obj} type={type} rank={i + 1} />
+          <Thumbnail data={obj} type={type.slice(0, -1)} rank={i + 1} />
         ))}
       </div>
     </>

@@ -13,6 +13,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "pug": "^3.0.0"
   }
 }

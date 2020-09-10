@@ -26,14 +26,16 @@ export default function Thumbnail(props) {
       }
       setDetails(data);
     }
-    getMissingDetails();
+    setDetails(data);
   }, []);
 
   return details ? (
     // ? Object.keys(details).map((key) => `${key}: ${details[key]} `)
     <div className="thumbnail">
       <h3 className="rank">{rank}</h3>
-      <img src={details.media} />
+      <a href={`//localhost:3001/${type}/${details.song_id}?watch=yes`}>
+        <img src={details.media} />
+      </a>
       <span className="title">{details.title}</span>
     </div>
   ) : null;
