@@ -66,43 +66,90 @@ app.get("/top_playlists", (req, res) => {
 });
 
 app.get("/song/:id", (req, res) => {
-  const id = req.params.id;
-  const sql = `SELECT * FROM Songs WHERE song_id = ${id}`;
+  const reg = new RegExp(".+w");
+  const id = reg.test(req.params.id)
+    ? req.params.id.slice(0, -1)
+    : req.params.id;
 
+  const sql = `SELECT s.*, a.title AS artist_name, al.title AS album_name
+  FROM songstreamer.songs s
+  INNER JOIN songstreamer.artists a
+    ON s.artist_id = a.artist_id
+  INNER JOIN songstreamer.albums al
+    ON s.album_id = al.album_id
+  WHERE s.song_id = ${id}`;
   database.query(sql, (e, result) => {
-    if (e) res.json("Mal info. Check id");
+    if (e) return res.status(404).json(e);
+    if (!result[0]) return res.status(404).send("no Such Song:/");
 
-    database.query(sql, (e, result) => {
-      if (e) res.status(404).json(e);
-      if (!req.query.watch === "yes") res.json(result);
+    result = result[0];
+    console.log(result);
+    if (!reg.test(req.params.id)) return res.json(result);
 
-      res.render("index", {
-        title: "Sbotify",
-        header: `${result[0].title}`,
-        subheader: `By: ${result[0].artist_id}`,
-        link: result[0].media.replace("watch?v=", "embed/"),
-      });
+    res.render("index", {
+      title: "Sbotify",
+      header: `${result.title}`,
+      subheader: `From: ${result.album_name}, By: ${result.artist_name}`,
+      details: `length: ${Math.floor(result.length / 60)}:${
+        result.length % 60
+      }, release date: ${result.created_at.toISOString().substring(0, 10)}`,
+      link: result.media.replace("watch?v=", "embed/"),
     });
   });
 });
 
 app.get("/album/:id", (req, res) => {
-  const id = req.params.id;
-  const sql = `SELECT * FROM Albums WHERE album_id = ${id}`;
+  const reg = new RegExp(".+w");
+  const id = reg.test(req.params.id)
+    ? req.params.id.slice(0, -1)
+    : req.params.id;
+
+  const sql = `SELECT al.*, ar.title AS artist_name 
+  FROM songstreamer.albums al
+  INNER JOIN songstreamer.artists ar
+    ON al.artist_id = ar.artist_id
+  WHERE al.album_id = ${id}`;
 
   database.query(sql, (e, result) => {
-    if (e) res.status(404).json(e);
-    res.json(result);
+    if (e) return res.status(404).json(e);
+    if (!result[0]) res.status(400).send("no such album :/");
+
+    result = result[0];
+
+    if (!reg.test(req.params.id)) return res.json(result);
+
+    res.render("index", {
+      title: "Sbotify",
+      header: `${result.title}`,
+      subheader: `By: ${result.artist_name}`,
+      details: `release date: ${result.created_at
+        .toISOString()
+        .substring(0, 10)}`,
+      link: result.media,
+    });
   });
 });
 
 app.get("/artist/:id", (req, res) => {
-  const id = req.params.id;
+  const reg = new RegExp(".+w");
+  const id = reg.test(req.params.id)
+    ? req.params.id.slice(0, -1)
+    : req.params.id;
   const sql = `SELECT * FROM Artists WHERE artist_id = ${id}`;
 
   database.query(sql, (e, result) => {
-    if (e) res.status(404).json(e);
-    res.json(result);
+    if (e) return res.status(404).json(e);
+    if (!result[0]) res.status(400).send("no such artist :/");
+
+    result = result[0];
+
+    if (!reg.test(req.params.id)) return res.json(result);
+
+    res.render("index", {
+      title: "Sbotify",
+      header: `${result.title}`,
+      link: result.media,
+    });
   });
 });
 
@@ -156,17 +203,15 @@ app.post("/playlist", (req, res) => {
   });
 });
 
+app.get("/sbotify/:query", (req, res) => {
+  const sql = `SELECT s.title AS s_t, al.title AS al_t, ar.title AS ar_title, p.title AS p_title
+  FROM Songs
+   `;
+});
+
 app.listen(PORT, () => {
   console.log(`server listening on ${PORT}`);
 });
-
-function createPage() {
-  const newWindow = window.open("");
-  newWindow.document.write(
-    "<html><head><title>MyTitle</title></head><body>test</body></html>"
-  );
-  return newWindow;
-}
 
 // function getTop20(table) {
 //   const sql = `SELECT * FROM ${table} LIMIT 20`;

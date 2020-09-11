@@ -1,8 +1,28 @@
 html
   head
     title= title
+    style.
+        body {
+            background-color: rgba(40, 40, 40, 0.85);
+            color: rgb(240, 20, 20);
+            margin-top: 5vh;
+            margin-left: 10vw;
+        }
+
+        h1 {
+            font-size:3em;
+        }
+
+        p {
+            font-size: 1.5em;
+        }
+
+        iframe{
+            border: none;
+        }
+
   body
     h1= header
     h2= subheader
     p= details
-    iframe(width='450', height='345', src=link)= link
+    iframe(calssName="video" width='900', height='450', src=link)= link

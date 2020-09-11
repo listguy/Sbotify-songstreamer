@@ -21,8 +21,6 @@ export default function TopThreeDisplay(props) {
     });
   }, []);
 
-  console.log(data);
-
   return data ? (
     <>
       <span className="category">
