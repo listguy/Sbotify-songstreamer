@@ -1,4 +1,3 @@
-const { query } = require("express");
 const express = require("express");
 const mysql = require("mysql");
 const PORT = 3001;
@@ -25,40 +24,21 @@ app.use(express.json());
 app.set("views", "./views");
 app.set("view engine", "pug");
 //
-
-app.get("/top_songs", (req, res) => {
-  const table = req.url.substring(5);
-  const sql = `SELECT * FROM ${table} LIMIT 3`;
-
-  database.query(sql, (e, result) => {
-    if (e) res.status(404).end();
-    res.json(result);
-  });
-});
-
-app.get("/top_albums", (req, res) => {
-  const table = req.url.substring(5);
-  const sql = `SELECT * FROM ${table} LIMIT 3`;
-
-  database.query(sql, (e, result) => {
-    if (e) res.status(404).end();
-    res.json(result);
-  });
-});
-
-app.get("/top_artists", (req, res) => {
-  const table = req.url.substring(5);
-  const sql = `SELECT * FROM ${table} LIMIT 3`;
-
-  database.query(sql, (e, result) => {
-    if (e) res.status(404).end();
-    res.json(result);
-  });
-});
-
-app.get("/top_playlists", (req, res) => {
-  const table = req.url.substring(5);
-  const sql = `SELECT * FROM ${table} LIMIT 3`;
+app.get("/top/:pType", (req, res) => {
+  const type = req.params.pType.slice(0, -1);
+  console.log(type);
+  const sql =
+    type === "song"
+      ? `SELECT * FROM ${type}s ORDER BY -views LIMIT 4`
+      : `SELECT a.* FROM ${type}s a 
+      INNER JOIN songs s ON ${
+        type === "playlist"
+          ? `s.song_id = ANY(SELECT song_id FROM songsinplaylist WHERE playlist_id = a.playlist_id)`
+          : `a.${type}_id = s.${type}_id`
+      }
+      GROUP BY ${type}_id 
+      ORDER BY -SUM(s.views)
+      LIMIT 4`;
 
   database.query(sql, (e, result) => {
     if (e) res.status(404).end();
@@ -86,6 +66,10 @@ app.get("/song/:id", (req, res) => {
     result = result[0];
     console.log(result);
     if (!reg.test(req.params.id)) return res.json(result);
+
+    database.query(
+      `UPDATE Songs SET views = ${result.views + 1} WHERE song_id = ${id}`
+    );
 
     res.render("index", {
       title: "Sbotify",
@@ -160,46 +144,25 @@ app.get("/playlist/:id", (req, res) => {
 
   database.query(sql, (e, result) => {
     if (e) res.status(404).json(e);
-    res.json(result);
+
+    database.query(
+      `SELECT * FROM songs WHERE song_id = ANY(SELECT song_id FROM songsinplaylist WHERE playlist_id = ${id})`,
+      (e, songsRes) => {
+        if (e) res.status(400).json(e);
+        result[0].songs = songsRes;
+        res.json(result);
+      }
+    );
   });
 });
 
-app.post("/song", (req, res) => {
+app.post("/:type", (req, res) => {
   const data = req.body;
-  const sql = `INSERT INTO Songs SET ?`;
+  const type = req.params.type;
+  const sql = `INSERT INTO ${type}s SET ?`;
 
   database.query(sql, data, (e, result) => {
-    if (e) res.json(e);
-    res.json(result);
-  });
-});
-
-app.post("/album", (req, res) => {
-  const data = req.body;
-  const sql = `INSERT INTO Albums SET ?`;
-
-  database.query(sql, data, (e, result) => {
-    if (e) res.json(e);
-    res.json(result);
-  });
-});
-
-app.post("/artist", (req, res) => {
-  const data = req.body;
-  const sql = `INSERT INTO Artists SET ?`;
-
-  database.query(sql, data, (e, result) => {
-    if (e) res.json(e);
-    res.json(result);
-  });
-});
-
-app.post("/playlist", (req, res) => {
-  const data = req.body;
-  const sql = `INSERT INTO Playlists SET ?`;
-
-  database.query(sql, data, (e, result) => {
-    if (e) res.json(e);
+    if (e) res.json(e).status(400);
     res.json(result);
   });
 });
@@ -264,14 +227,72 @@ app.listen(PORT, () => {
   console.log(`server listening on ${PORT}`);
 });
 
-// function getTop20(table) {
-//   const sql = `SELECT * FROM ${table} LIMIT 20`;
+// app.get("/top_songs", (req, res) => {
+//   const table = req.url.substring(5);
+//   const sql = `SELECT * FROM ${table} ORDER BY -views LIMIT 4`;
 
-//   database
-//     .query(sql, (e, result) => {
-//       if (e) return e;
-//       return result;
-//     })
-//     .then((result) => result)
-//     .catch((e) => e);
-// }
+//   database.query(sql, (e, result) => {
+//     if (e) res.status(404).end();
+//     res.json(result);
+//   });
+// });
+
+// app.get("/top_albums", (req, res) => {
+//   const table = req.url.substring(5);
+//   const sql = `SELECT * FROM ${table} LIMIT 4`;
+
+//   database.query(sql, (e, result) => {
+//     if (e) res.status(404).end();
+//     res.json(result);
+//   });
+// });
+
+// app.get("/top_artists", (req, res) => {
+//   const table = req.url.substring(5);
+//   const sql = `SELECT * FROM ${table} LIMIT 4`;
+
+//   database.query(sql, (e, result) => {
+//     if (e) res.status(404).end();
+//     res.json(result);
+//   });
+// });
+
+// app.get("/top_playlists", (req, res) => {
+//   const table = req.url.substring(5);
+//   const sql = `SELECT * FROM ${table} LIMIT 4`;
+
+//   database.query(sql, (e, result) => {
+//     if (e) res.status(404).end();
+//     res.json(result);
+//   });
+// });
+
+// app.post("/album", (req, res) => {
+//   const data = req.body;
+//   const sql = `INSERT INTO Albums SET ?`;
+
+//   database.query(sql, data, (e, result) => {
+//     if (e) res.json(e);
+//     res.json(result);
+//   });
+// });
+
+// app.post("/artist", (req, res) => {
+//   const data = req.body;
+//   const sql = `INSERT INTO Artists SET ?`;
+
+//   database.query(sql, data, (e, result) => {
+//     if (e) res.json(e);
+//     res.json(result);
+//   });
+// });
+
+// app.post("/playlist", (req, res) => {
+//   const data = req.body;
+//   const sql = `INSERT INTO Playlists SET ?`;
+
+//   database.query(sql, data, (e, result) => {
+//     if (e) res.json(e);
+//     res.json(result);
+//   });
+// });

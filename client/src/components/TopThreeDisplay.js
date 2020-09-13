@@ -16,7 +16,7 @@ export default function TopThreeDisplay(props) {
   };
 
   useEffect(() => {
-    getFromDB(`/top_${type}`).then((result) => {
+    getFromDB(`/top/${type}`).then((result) => {
       setData(result);
     });
   }, []);
@@ -24,7 +24,7 @@ export default function TopThreeDisplay(props) {
   return data ? (
     <>
       <span className="category">
-        Top 3 {type} {icons[type]}
+        Top 4 {type} {icons[type]}
       </span>
       <div className="top-three-display">
         {data.map((obj, i) => (
