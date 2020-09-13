@@ -241,9 +241,9 @@ app.delete("/:type/:id", (req, res) => {
     res.status(204).end();
   });
 });
+
 app.get("/search-sbotify/:query", (req, res) => {
   const query = req.params.query;
-  console.log(query);
   const sql = `SELECT song_id AS id,title, 'song' AS type FROM Songs
   WHERE title REGEXP '^${query}'
   UNION ALL
@@ -256,7 +256,6 @@ app.get("/search-sbotify/:query", (req, res) => {
 
   database.query(sql, (e, result) => {
     if (e) res.json("Check your connection");
-    console.log(result);
     res.json(result);
   });
 });

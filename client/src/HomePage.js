@@ -7,11 +7,13 @@ import { ImSpotify } from "react-icons/im";
 function HomePage() {
   return (
     <>
-      <h1 className="header">
-        Sbotify{"  "}
-        <ImSpotify color="red" />
-      </h1>
-      <SearchBar />
+      <section id="head">
+        <h1 className="header">
+          Sbotify{"  "}
+          <ImSpotify color="red" />
+        </h1>
+        <SearchBar id="search-bar" />
+      </section>
       <TopThreeDisplay type="artists" />
       <TopThreeDisplay type="albums" />
       <TopThreeDisplay type="songs" />

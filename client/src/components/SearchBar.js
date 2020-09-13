@@ -20,27 +20,30 @@ export default function SearchBar() {
     }
     const newRes = await getFromDB(`/search-sbotify/${searchInput}`);
     console.log(newRes);
-    setResults(newRes);
+    !newRes[0] ? setResults("No results found :/") : setResults(newRes);
   };
 
   return (
-    <>
+    <div id="search-container">
       <input
+        id="search-bar"
         placeholder="Type name of a song, album or artist.."
         onChange={(event) => fetchResults(event.target.value)}
       />
       {results ? (
         <div id="search-res">
-          {results.map((res) => (
-            <a href={`//localhost:3001/${res.type}/${res.id}w`}>
-              <li>
-                <span className="res-title">{res.title}</span>
-                <span className="res-icon">{icons[res.type]}</span>
-              </li>
-            </a>
-          ))}
+          {Array.isArray(results)
+            ? results.map((res) => (
+                <a href={`//localhost:3001/${res.type}/${res.id}w`}>
+                  <li>
+                    <span className="res-icon">{icons[res.type]}</span>
+                    <span className="res-title">{res.title}</span>
+                  </li>
+                </a>
+              ))
+            : results}
         </div>
       ) : null}
-    </>
+    </div>
   );
 }

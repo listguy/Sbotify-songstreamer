@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import HomePage from "./HomePage";
 
+document.title = "Sboftify";
 ReactDOM.render(
   <React.StrictMode>
     <HomePage />

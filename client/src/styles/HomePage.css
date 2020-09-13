@@ -3,7 +3,13 @@ body {
   color: rgb(240, 20, 40);
 }
 
+#head {
+  width: 90vw;
+  margin: 0 auto;
+  display: flex;
+  align-items: baseline;
+}
+
 .header {
   font-size: 5em;
-  margin-left: 3vw;
 }

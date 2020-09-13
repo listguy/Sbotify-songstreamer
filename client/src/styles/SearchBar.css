@@ -1,5 +1,42 @@
+#search-container {
+  width: 55vw;
+  display: flex;
+  margin-right: 5vw;
+  margin-left: auto;
+  flex-direction: column;
+  font-size: 1.2em;
+}
+#search-bar {
+  width: inherit;
+  height: 1.5em;
+  padding: 0.5em;
+  border-radius: 25px;
+}
+
 #search-res {
-  background-color: white;
-  height: 10vh;
-  width: 100px;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.7);
+  height: fit-content;
+  width: inherit;
+  top: 8.5em;
+  line-height: 2em;
+  list-style: none;
+  font-style: italic;
+  z-index: 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+#search-res li:hover {
+  background-color: rgba(250, 250, 250, 0.6);
+}
+
+.res-icon {
+  margin-left: 0.5em;
+}
+.res-title {
+  margin-left: 2em;
 }
