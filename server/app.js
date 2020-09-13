@@ -1,3 +1,4 @@
+const { query } = require("express");
 const express = require("express");
 const mysql = require("mysql");
 const PORT = 3001;
@@ -203,10 +204,61 @@ app.post("/playlist", (req, res) => {
   });
 });
 
-app.get("/sbotify/:query", (req, res) => {
-  const sql = `SELECT s.title AS s_t, al.title AS al_t, ar.title AS ar_title, p.title AS p_title
-  FROM Songs
+app.patch("/:type/:id", (req, res) => {
+  const type = req.params.type;
+  const id = req.params.id;
+
+  const values = Object.entries(req.body)
+    .map(
+      (entry) =>
+        `${entry[0]}=${Number.isInteger(entry[1]) ? entry[1] : `'${entry[1]}'`}`
+    )
+    .join(", ");
+
+  const sql = `UPDATE ${type}s 
+  SET ${values}
+  WHERE ${type}_id = ${id}`;
+  console.log(sql);
+
+  database.query(sql, (e, result) => {
+    if (e)
+      return res
+        .status(400)
+        .send(
+          "Bad request. Check all your columns exist in table and have proper values."
+        );
+    res.json(result);
+  });
+});
+
+app.delete("/:type/:id", (req, res) => {
+  const type = req.params.type;
+  const id = req.params.id;
+
+  const sql = `DELETE FROM ${type}s WHERE ${type}_id=${id}`;
+
+  database.query(sql, (e, result) => {
+    res.status(204).end();
+  });
+});
+app.get("/search-sbotify/:query", (req, res) => {
+  const query = req.params.query;
+  console.log(query);
+  const sql = `SELECT song_id AS id,title, 'song' AS type FROM Songs
+  WHERE title REGEXP '^${query}'
+  UNION ALL
+  SELECT album_id, title, 'album' FROM Albums
+  WHERE title REGEXP '^${query}'
+  UNION ALL
+  SELECT artist_id, title, 'artist' FROM Artists
+  WHERE title REGEXP '^${query}'
    `;
+
+  database.query(sql, (e, result) => {
+    if (e) res.json("Check your connection");
+    console.log(result);
+    res.json(result);
+  });
 });
 
 app.listen(PORT, () => {
