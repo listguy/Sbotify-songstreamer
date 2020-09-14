@@ -1,4 +1,4 @@
-export default function getFromDB(endpoint) {
+function getFromDB(endpoint) {
   const headers = { "Content-Type": "application/json" };
   const config = {
     method: "GET",
@@ -15,4 +15,12 @@ export default function getFromDB(endpoint) {
     return Promise.reject(data);
   });
 }
+
+function goToPage(type, id) {
+  window.location.assign(
+    `${window.location.protocol}//${window.location.host}/watch/${type}/${id}`
+  );
+}
+
+export { goToPage, getFromDB };
 //will add post handling later

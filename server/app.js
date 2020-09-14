@@ -44,7 +44,40 @@ app.get("/top/:pType", (req, res) => {
   });
 });
 
-app.get("/song/:id", (req, res) => {
+app.get("/watch/:type/:id", (req, res) => {
+  const { type, id } = req.params;
+
+  const sql = `SELECT a.*${
+    type !== "artist" ? `, b.title AS artist_name` : ``
+  } ${type === "song" ? `, c.title AS album_name` : ``}
+  FROM ${type}s a
+  ${
+    type !== "artist"
+      ? `INNER JOIN artists b
+  ON a.artist_id = b.artist_id`
+      : ``
+  }
+  ${
+    type === "song"
+      ? `INNER JOIN albums c
+  ON a.album_id = c.album_id`
+      : ``
+  }
+  WHERE a.${type}_id = ${id}`;
+
+  // if (type === "song") {
+  //   database.query(
+  //     `UPDATE Songs SET views = ${result.views + 1} WHERE song_id = ${id}`
+  //   );
+  // }
+
+  database.query(sql, (e, result) => {
+    if (e) return res.status(404).json(e);
+    res.json(result[0]);
+  });
+});
+
+app.get("/watch/song/:id", (req, res) => {
   const reg = new RegExp(".+w");
   const id = reg.test(req.params.id)
     ? req.params.id.slice(0, -1)

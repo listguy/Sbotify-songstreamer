@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import getFromDB from "./wrapper";
+import { getFromDB, goToPage } from "./Home/components/wrapper";
 import { IoMdMusicalNote } from "react-icons/io";
 import { MdAlbum } from "react-icons/md";
 import { GiMicrophone } from "react-icons/gi";
-import "../styles/SearchBar.css";
+import "./SearchBar.css";
 
 export default function SearchBar() {
   const [results, setResults] = useState();
@@ -33,12 +33,12 @@ export default function SearchBar() {
         <div id="search-res">
           {Array.isArray(results)
             ? results.map((res) => (
-                <a href={`//localhost:3001/${res.type}/${res.id}w`}>
-                  <li>
-                    <span className="res-icon">{icons[res.type]}</span>
-                    <span className="res-title">{res.title}</span>
-                  </li>
-                </a>
+                <li onClick={() => goToPage(res.type, res.id)}>
+                  <span className="res-icon">{icons[res.type]}</span>
+                  <span className="res-title">{res.title}</span>
+                </li>
+                // <a href={`//localhost:3001/${res.type}/${res.id}w`}>
+                // </a>
               ))
             : results}
         </div>

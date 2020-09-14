@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import getFromDB from "./wrapper.js";
+import { getFromDB } from "./wrapper.js";
 import Thumbnail from "./Thumbnail";
 import "../styles/TopThreeDisplay.css";
 import { IoMdMusicalNote } from "react-icons/io";
