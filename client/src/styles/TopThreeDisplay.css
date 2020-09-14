@@ -1,0 +1,12 @@
+.top-three-display {
+  background-color: rgba(10, 10, 10, 0.2);
+  display: flex;
+  padding: 0.5em;
+  margin: 2em 15vw 6em;
+  justify-content: center;
+}
+
+.category {
+  margin-left: 10vw;
+  font-size: 2.5em;
+}
