@@ -1,8 +1,6 @@
 const express = require("express");
 const mysql = require("mysql");
 const PORT = 3001;
-// const path = require("path");
-// const singlePagePath = "/singlePage.html";
 
 //Creating a connection to MySQL
 const database = mysql.createConnection({
@@ -26,7 +24,7 @@ app.set("view engine", "pug");
 //
 app.get("/top/:pType", (req, res) => {
   const type = req.params.pType.slice(0, -1);
-  console.log(type);
+
   const sql =
     type === "song"
       ? `SELECT * FROM ${type}s ORDER BY -views LIMIT 4`
@@ -64,7 +62,7 @@ app.get("/song/:id", (req, res) => {
     if (!result[0]) return res.status(404).send("no Such Song:/");
 
     result = result[0];
-    console.log(result);
+
     if (!reg.test(req.params.id)) return res.json(result);
 
     database.query(
@@ -181,7 +179,6 @@ app.patch("/:type/:id", (req, res) => {
   const sql = `UPDATE ${type}s 
   SET ${values}
   WHERE ${type}_id = ${id}`;
-  console.log(sql);
 
   database.query(sql, (e, result) => {
     if (e)
@@ -226,73 +223,3 @@ app.get("/search-sbotify/:query", (req, res) => {
 app.listen(PORT, () => {
   console.log(`server listening on ${PORT}`);
 });
-
-// app.get("/top_songs", (req, res) => {
-//   const table = req.url.substring(5);
-//   const sql = `SELECT * FROM ${table} ORDER BY -views LIMIT 4`;
-
-//   database.query(sql, (e, result) => {
-//     if (e) res.status(404).end();
-//     res.json(result);
-//   });
-// });
-
-// app.get("/top_albums", (req, res) => {
-//   const table = req.url.substring(5);
-//   const sql = `SELECT * FROM ${table} LIMIT 4`;
-
-//   database.query(sql, (e, result) => {
-//     if (e) res.status(404).end();
-//     res.json(result);
-//   });
-// });
-
-// app.get("/top_artists", (req, res) => {
-//   const table = req.url.substring(5);
-//   const sql = `SELECT * FROM ${table} LIMIT 4`;
-
-//   database.query(sql, (e, result) => {
-//     if (e) res.status(404).end();
-//     res.json(result);
-//   });
-// });
-
-// app.get("/top_playlists", (req, res) => {
-//   const table = req.url.substring(5);
-//   const sql = `SELECT * FROM ${table} LIMIT 4`;
-
-//   database.query(sql, (e, result) => {
-//     if (e) res.status(404).end();
-//     res.json(result);
-//   });
-// });
-
-// app.post("/album", (req, res) => {
-//   const data = req.body;
-//   const sql = `INSERT INTO Albums SET ?`;
-
-//   database.query(sql, data, (e, result) => {
-//     if (e) res.json(e);
-//     res.json(result);
-//   });
-// });
-
-// app.post("/artist", (req, res) => {
-//   const data = req.body;
-//   const sql = `INSERT INTO Artists SET ?`;
-
-//   database.query(sql, data, (e, result) => {
-//     if (e) res.json(e);
-//     res.json(result);
-//   });
-// });
-
-// app.post("/playlist", (req, res) => {
-//   const data = req.body;
-//   const sql = `INSERT INTO Playlists SET ?`;
-
-//   database.query(sql, data, (e, result) => {
-//     if (e) res.json(e);
-//     res.json(result);
-//   });
-// });

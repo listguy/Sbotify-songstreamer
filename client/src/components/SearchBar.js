@@ -19,7 +19,6 @@ export default function SearchBar() {
       return;
     }
     const newRes = await getFromDB(`/search-sbotify/${searchInput}`);
-    console.log(newRes);
     !newRes[0] ? setResults("No results found :/") : setResults(newRes);
   };
 
