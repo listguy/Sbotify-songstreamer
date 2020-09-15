@@ -1,30 +1,33 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Link, Switch } from "react-router-dom";
 import { ImSpotify } from "react-icons/im";
 
 import HomePage from "./Home";
-import SinglePageView from "./SinglePageView";
 import SearchBar from "./SearchBar";
+import SongsPage from "./SinglePageView/components/SongsPage";
+import AlbumPage from "./SinglePageView/components/AlbumPage";
+import ArtistPage from "./SinglePageView/components/ArtistPage";
 
 export default function Root() {
   return (
     <>
       <section id="head">
-        <h1
-          className="header"
-          onClick={() =>
-            window.location.assign(
-              `${window.location.protocol}//${window.location.host}/`
-            )
-          }
-        >
-          Sbotify{"  "}
-          <ImSpotify color="red" />
-        </h1>
+        <Link to="/">
+          <h1 className="header">
+            Sbotify{"  "}
+            <ImSpotify color="red" />
+          </h1>
+        </Link>
         <SearchBar id="search-bar" />
       </section>
-      <Route component={HomePage} exact path="/" />
-      <Route component={SinglePageView} path="/watch" />
+      <Switch>
+        <Route component={HomePage} exact path="/" />
+        <Route component={SongsPage} path="/watch/song/:id" />
+        <Route component={AlbumPage} path="/watch/album/:id" />
+        <Route component={ArtistPage} path="/watch/artist/:id" />
+        {/* {<Route component={SinglePageView} path="/watch/playlist/:id" /> make playlist route work*/}
+        <Route render={() => <h2>Page not fount :\</h2>} />
+      </Switch>
     </>
   );
 }
