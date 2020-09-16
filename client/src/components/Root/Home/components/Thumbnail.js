@@ -28,12 +28,14 @@ export default function Thumbnail(props) {
           <img src={media} />
         </Link>
       </div>
-      <span className="title">{data.title}</span>
-      <Link to={`/watch/artist/${data.artist_id}`}>
-        {type === "artist" ? null : (
-          <span className="artist-link">{data.artist}</span>
-        )}
-      </Link>
+      <>
+        <span className="title">{data.title}</span>
+        <Link to={`/watch/artist/${data.artist_id}`}>
+          {type === "artist" ? null : (
+            <span className="artist-link">{data.artist}</span>
+          )}
+        </Link>
+      </>
     </div>
   ) : null;
 }

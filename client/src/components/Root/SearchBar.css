@@ -1,8 +1,7 @@
 #search-container {
   width: 55vw;
   display: flex;
-  margin-right: 5vw;
-  margin-left: auto;
+  margin-left: 5vw;
   flex-direction: column;
   font-size: 1.2em;
 }

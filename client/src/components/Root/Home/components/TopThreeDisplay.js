@@ -34,9 +34,9 @@ export default function TopThreeDisplay(props) {
   return data ? (
     <div className="top-three-display">
       <span className="category">
-        Top 4 {type} {icons[type]}
+        Top {type} {icons[type]}
       </span>
-      <Carousela Item={Thumbnail} data={data} count={5} step={1} />
+      <Carousela Template={Thumbnail} data={data} count={5} step={1} />
     </div>
   ) : null;
 }

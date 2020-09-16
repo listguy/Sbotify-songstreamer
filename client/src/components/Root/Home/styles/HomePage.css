@@ -1,6 +1,7 @@
 body {
-  background-color: rgba(40, 40, 40, 0.85);
-  color: rgb(240, 20, 40);
+  /* background: linear-gradient(to right, #536976, #292e49); */
+  background: linear-gradient(to right, #1b1c1d, #626264);
+  color: wheat;
 }
 
 #head {
@@ -11,5 +12,5 @@ body {
 }
 
 .header {
-  font-size: 5em;
+  font-size: 2.5em;
 }

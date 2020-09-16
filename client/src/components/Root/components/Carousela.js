@@ -4,7 +4,7 @@ import "./Carousela.css";
 
 export default function Carousela(props) {
   const [curStep, setStep] = useState(0);
-  const { Item, data, count, step } = props; //item = how to show (a component that handles your data), data = what to show(array), count= How many to show(int), step = how many to slide
+  const { Template, data, count, step } = props; //Template = how to show (a component that handles your data), data = what to show(array), count= How many to show(int), step = how many to slide
   const maxStep = useMemo(() => data.length - count, [data]);
 
   const slide = (steps) => {
@@ -20,7 +20,7 @@ export default function Carousela(props) {
       <div id="surface">
         {data
           .slice(curStep, curStep + count)
-          .map((d, i) => Item({ data: d, rank: curStep + i + 1 }))}
+          .map((d, i) => Template({ data: d, rank: curStep + i + 1 }))}
       </div>
       <div className="carousela-button" onClick={() => slide(step)}>
         {<BiRightArrow />}
@@ -28,3 +28,5 @@ export default function Carousela(props) {
     </div>
   );
 }
+
+//Attention! Carousela returns your props as a property 'data' of a wrapper props. To extract the data do props.data

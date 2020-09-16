@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { getFromDB } from "../wrapper";
+import SongList from "./components/SongList";
+import Carousela from "../components/Carousela";
+import Thumbnail from "../Home/components/Thumbnail";
 
 export default function ArtistPage() {
   const [data, setData] = useState();
@@ -29,17 +32,20 @@ export default function ArtistPage() {
 
   return data ? (
     <>
-      <div id="grid">
-        <div id="details">
-          <span id="type">{data.type}</span>
-          <h1>{data[0].title}</h1>
-        </div>
-        <div id="cover">
-          <img src={data[0].media} />
+      <div id="container">
+        <div id="top" style={{ backgroundImage: `url(${data[0].media})` }}>
+          <div id="details">
+            <h1>{data[0].title}</h1>
+            <span id="type">Artist</span>
+          </div>
+          <div id="cover">{/* <img src={data[0].media} /> */}</div>
         </div>
       </div>
-      Top Albums <div>{data[1].map((a) => a.title)}</div>
-      Top songs <div>{data[2].map((s) => s.title)}</div>
+      Top songs <div>{<SongList songs={data[2]} />}</div>
+      Albums{" "}
+      <div>
+        {<Carousela Template={Thumbnail} data={data[1]} count={3} step={1} />}
+      </div>
     </>
   ) : null;
 }

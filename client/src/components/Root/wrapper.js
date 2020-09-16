@@ -21,7 +21,7 @@ function getFromDB(endpoint) {
 function getAllBy(table, filter, id, order) {
   if (!table) throw new Error(`Expected to get a string, got ${typeof table}`);
 
-  const endpoint = `api/get_all/${table}?filter=${filter ? filter : ``}&id=${
+  const endpoint = `/api/get_all/${table}?filter=${filter ? filter : ``}&id=${
     id ? id : ``
   }&order=${order ? order : ``}`;
   const headers = { "Content-Type": "application/json" };
