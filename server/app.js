@@ -131,7 +131,7 @@ app.delete("/:type/:id", (req, res) => {
   });
 });
 
-app.get("/search-sbotify/:query", (req, res) => {
+app.get("/api/search-sbotify/:query", (req, res) => {
   const query = req.params.query;
   const sql = `SELECT song_id AS id,title, 'song' AS type FROM Songs
   WHERE title REGEXP '^${query}'
@@ -149,7 +149,20 @@ app.get("/search-sbotify/:query", (req, res) => {
   });
 });
 
-app.get("/get_all_songs_of/");
+app.get("/api/get_all/:table", (req, res) => {
+  const { filter, id, order } = req.query;
+  const { table } = req.params;
+
+  const sql = `SELECT * FROM ${table} ${
+    filter && id ? `WHERE ${filter}_id=${id} ` : ``
+  }${order ? `ORDER BY ${order}` : ``}`;
+  console.log(sql);
+  database.query(sql, (e, result) => {
+    if (e) return res.json(400);
+    res.json(result);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`server listening on ${PORT}`);
 });

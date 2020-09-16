@@ -4,9 +4,7 @@ import { ImSpotify } from "react-icons/im";
 
 import HomePage from "./Home";
 import SearchBar from "./SearchBar";
-import SongsPage from "./SinglePageView/components/SongsPage";
-import AlbumPage from "./SinglePageView/components/AlbumPage";
-import ArtistPage from "./SinglePageView/components/ArtistPage";
+import { AlbumPage, ArtistPage, SongsPage } from "./OtherPages";
 
 export default function Root() {
   return (

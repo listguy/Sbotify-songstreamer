@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getFromDB } from "./Home/components/wrapper";
+import { getFromDB } from "./wrapper";
 import { Link } from "react-router-dom";
 import { IoMdMusicalNote } from "react-icons/io";
 import { MdAlbum } from "react-icons/md";
@@ -20,7 +20,7 @@ export default function SearchBar() {
       setResults("");
       return;
     }
-    const newRes = await getFromDB(`/search-sbotify/${searchInput}`);
+    const newRes = await getFromDB(`/api/search-sbotify/${searchInput}`);
     !newRes[0] ? setResults("No results found :/") : setResults(newRes);
   };
 

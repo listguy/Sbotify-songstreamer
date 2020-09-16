@@ -1,26 +1,58 @@
 .thumbnail {
+  position: relative;
   display: flex;
   flex-direction: column;
-  margin-right: 1em;
-  margin-left: 1em;
+  margin: 0 1vw;
+  padding: 3vh 1vw;
   word-break: normal;
-  width: 25%;
+  width: 20%;
   align-items: center;
 }
 
-.thumbnail:hover {
-  background-color: rgba(10, 10, 10, 0.3);
-  transition: 0.5s;
-  cursor: pointer;
+.rank {
+  position: absolute;
+  top: 0;
+  left: -1vw;
+  font-size: 7vh;
+  text-shadow: 2px 2px 4px #000000;
+  font-style: italic;
+}
+.thumb-img {
+  height: 12vw;
+  width: 12vw;
+}
+
+.overlay-options {
+  position: absolute;
+  opacity: 0;
+  font-size: 8vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .thumbnail img {
-  width: 12vw;
-  height: 12vw;
+  height: 100%;
+  width: 100%;
+}
+
+.thumb-img:hover .overlay-options {
+  transition: 1s ease;
+  opacity: 1;
+  color: white;
+}
+.thumb-img:hover img {
+  opacity: 0.5;
+  transition: 0.5s ease;
 }
 
 .title {
   text-align: center;
-  font-size: 1.2vw;
+  font-size: 1vw;
   font-style: italic;
+}
+
+.artist-link:hover {
+  font-weight: bold;
+  filter: brightness(2);
 }

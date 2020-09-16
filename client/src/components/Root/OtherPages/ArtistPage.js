@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { getFromDB } from "../../Home/components/wrapper";
+import { getFromDB } from "../wrapper";
 
 export default function ArtistPage() {
   const [data, setData] = useState();
