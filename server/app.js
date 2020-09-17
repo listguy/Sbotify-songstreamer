@@ -24,7 +24,7 @@ app.set("view engine", "pug");
 //
 app.get("/top/:pType", (req, res) => {
   const type = req.params.pType.slice(0, -1);
-  const limit = req.query.limit || 4;
+  const limit = req.query.limit || 5;
   const filterBy = req.query.filter;
   const id = req.query.id;
 
@@ -47,6 +47,33 @@ app.get("/top/:pType", (req, res) => {
   database.query(sql, (e, result) => {
     if (e) res.status(404).end();
     res.json(result);
+  });
+});
+
+app.get("/watch/playlist/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = `SELECT * FROM Playlists WHERE playlist_id = ${id}`;
+
+  database.query(sql, (e, result) => {
+    if (e) res.status(404).json(e);
+
+    database.query(
+      `SELECT a.* , b.title AS artist_name, c.title AS album_name FROM songs a
+      INNER JOIN artists b
+            ON a.artist_id = b.artist_id
+      INNER JOIN albums c
+            ON a.album_id = c.album_id 
+      WHERE song_id = ANY(
+        SELECT song_id FROM songsinplaylist 
+        WHERE playlist_id = ${id})
+      `,
+      (e, songsRes) => {
+        if (e) res.status(400).json(e);
+        result[0].artists = [...new Set(songsRes.map((s) => s.artist_name))];
+        result[0].songs = songsRes;
+        res.json(result);
+      }
+    );
   });
 });
 

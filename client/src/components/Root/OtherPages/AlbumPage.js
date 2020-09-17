@@ -38,7 +38,9 @@ export default function AlbumPage() {
         </div>
       </section>
       <section id="songs">
-        <SongList songs={data.songs} showIndex={true} />
+        <div id="al-song-list">
+          <SongList songs={data.songs} showIndex={true} />
+        </div>
       </section>
     </div>
   ) : null;

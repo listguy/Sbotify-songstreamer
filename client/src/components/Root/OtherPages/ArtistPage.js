@@ -4,6 +4,9 @@ import { getFromDB } from "../wrapper";
 import SongList from "./components/SongList";
 import Carousela from "../components/Carousela";
 import Thumbnail from "../Home/components/Thumbnail";
+import { IoMdMusicalNote } from "react-icons/io";
+import { MdAlbum } from "react-icons/md";
+import "./styles/ArtistPage.css";
 
 export default function ArtistPage() {
   const [data, setData] = useState();
@@ -32,19 +35,20 @@ export default function ArtistPage() {
 
   return data ? (
     <>
-      <div id="container">
-        <div id="top" style={{ backgroundImage: `url(${data[0].media})` }}>
-          <div id="details">
+      <div id="ar-container">
+        <div id="ar-top" style={{ backgroundImage: `url(${data[0].media})` }}>
+          <div id="ar-details">
             <h1>{data[0].title}</h1>
-            <span id="type">Artist</span>
+            <span id="ar-type">Artist</span>
           </div>
-          <div id="cover">{/* <img src={data[0].media} /> */}</div>
+          {/* <div id="cover"><img src={data[0].media} /></div> */}
         </div>
-      </div>
-      Top songs <div>{<SongList songs={data[2]} />}</div>
-      Albums{" "}
-      <div>
-        {<Carousela Template={Thumbnail} data={data[1]} count={3} step={1} />}
+        <div id="music">
+          Top Songs <IoMdMusicalNote />{" "}
+          <div id="ar-sl">{<SongList songs={data[2]} />}</div>
+          Albums <MdAlbum />
+          {<Carousela Template={Thumbnail} data={data[1]} count={3} step={1} />}
+        </div>
       </div>
     </>
   ) : null;
