@@ -4,7 +4,7 @@ import { ImSpotify } from "react-icons/im";
 
 import HomePage from "./Home";
 import SearchBar from "./SearchBar";
-import { AlbumPage, ArtistPage, SongsPage } from "./OtherPages";
+import { AlbumPage, ArtistPage, SongsPage, PlayListPage } from "./OtherPages";
 
 export default function Root() {
   return (
@@ -23,7 +23,7 @@ export default function Root() {
         <Route component={SongsPage} path="/watch/song/:id" />
         <Route component={AlbumPage} path="/watch/album/:id" />
         <Route component={ArtistPage} path="/watch/artist/:id" />
-        {/* {<Route component={SinglePageView} path="/watch/playlist/:id" /> make playlist route work*/}
+        <Route component={PlayListPage} path="/watch/playlist/:id" />
         <Route render={() => <h2>Page not fount :\</h2>} />
       </Switch>
     </>

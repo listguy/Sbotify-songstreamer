@@ -10,6 +10,7 @@ function HomePage() {
       <TopThreeDisplay type="artists" />
       <TopThreeDisplay type="albums" />
       <TopThreeDisplay type="songs" />
+      <TopThreeDisplay type="playlists" />
     </>
   );
 }

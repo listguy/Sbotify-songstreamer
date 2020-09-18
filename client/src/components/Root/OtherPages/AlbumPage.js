@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getAllBy, getFromDB } from "../wrapper";
 import SongList from "./components/SongList";
+import ArtistCircleWidg from "./components/ArtistCircleWidg";
 import "./styles/AlbumPage.css";
 
 export default function AlbumPage() {
@@ -31,10 +32,15 @@ export default function AlbumPage() {
           <span id="type">Album</span>
           <br />
           By:
-          <Link to={`/watch/artist/${data.details.artist_id}`}>
+          {/* <Link to={`/watch/artist/${data.details.artist_id}`}>
             <img id="artist-pic" src={data.details.artist_img} />
             <span>{data.details.artist_name}</span>
-          </Link>
+          </Link> */}
+          <ArtistCircleWidg
+            pic={data.details.artist_img}
+            title={data.details.artist_name}
+            id={data.details.artist_id}
+          />
         </div>
       </section>
       <section id="songs">

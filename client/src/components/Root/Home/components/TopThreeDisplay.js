@@ -6,6 +6,7 @@ import "../styles/TopThreeDisplay.css";
 import { IoMdMusicalNote } from "react-icons/io";
 import { MdAlbum } from "react-icons/md";
 import { GiMicrophone } from "react-icons/gi";
+import { RiPlayListFill } from "react-icons/ri";
 
 export default function TopThreeDisplay(props) {
   const [data, setData] = useState();
@@ -14,6 +15,7 @@ export default function TopThreeDisplay(props) {
     songs: <IoMdMusicalNote />,
     albums: <MdAlbum />,
     artists: <GiMicrophone />,
+    playlists: <RiPlayListFill />,
   };
 
   useEffect(() => {
@@ -26,6 +28,7 @@ export default function TopThreeDisplay(props) {
           })
         )
       );
+      if (type === "playlists") console.log(results);
       setData(results);
     });
   }, []);

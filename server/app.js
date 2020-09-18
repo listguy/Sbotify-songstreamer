@@ -58,7 +58,7 @@ app.get("/watch/playlist/:id", (req, res) => {
     if (e) res.status(404).json(e);
 
     database.query(
-      `SELECT a.* , b.title AS artist_name, c.title AS album_name FROM songs a
+      `SELECT a.* , b.title AS artist_name, b.media AS artist_cover, c.title AS album_name FROM songs a
       INNER JOIN artists b
             ON a.artist_id = b.artist_id
       INNER JOIN albums c
@@ -69,7 +69,23 @@ app.get("/watch/playlist/:id", (req, res) => {
       `,
       (e, songsRes) => {
         if (e) res.status(400).json(e);
-        result[0].artists = [...new Set(songsRes.map((s) => s.artist_name))];
+        let artist_details = [
+          ...new Set(
+            songsRes
+              .map((s) => [s.artist_name, s.artist_cover, s.artist_id])
+              .flat()
+          ),
+        ];
+        let artists = [];
+        for (let i = 0; i < artist_details.length - 2; i += 3) {
+          artists.push([
+            artist_details[i],
+            artist_details[i + 1],
+            artist_details[i + 2],
+          ]);
+        }
+
+        result[0].artists = artists;
         result[0].songs = songsRes;
         res.json(result);
       }
@@ -167,6 +183,9 @@ app.get("/api/search-sbotify/:query", (req, res) => {
   WHERE title REGEXP '^${query}'
   UNION ALL
   SELECT artist_id, title, 'artist' FROM Artists
+  WHERE title REGEXP '^${query}'
+  UNION ALL
+  SELECT playlist_id, title, 'playlist' FROM Playlists
   WHERE title REGEXP '^${query}'
    `;
 

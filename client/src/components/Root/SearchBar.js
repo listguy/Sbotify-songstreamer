@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { IoMdMusicalNote } from "react-icons/io";
 import { MdAlbum } from "react-icons/md";
 import { GiMicrophone } from "react-icons/gi";
+import { RiPlayListFill } from "react-icons/ri";
 import "./SearchBar.css";
 
 export default function SearchBar() {
@@ -13,6 +14,7 @@ export default function SearchBar() {
     song: <IoMdMusicalNote />,
     album: <MdAlbum />,
     artist: <GiMicrophone />,
+    playlist: <RiPlayListFill />,
   };
 
   const fetchResults = async (searchInput) => {
