@@ -30,9 +30,11 @@ app.get("/top/:pType", (req, res) => {
 
   const sql =
     type === "song"
-      ? `SELECT * FROM ${type}s ${
-          filterBy && id ? `WHERE ${filterBy}_id=${Number(id)}` : ``
-        } ORDER BY -views LIMIT ${limit}`
+      ? `SELECT a.*, b.title AS album FROM ${type}s a 
+        INNER JOIN albums b 
+            ON a.album_id = b.album_id
+        ${filterBy && id ? `WHERE a.${filterBy}_id=${Number(id)}` : ``} 
+        ORDER BY -views LIMIT ${limit}`
       : `SELECT a.* FROM ${type}s a 
       INNER JOIN songs s ON ${
         type === "playlist"

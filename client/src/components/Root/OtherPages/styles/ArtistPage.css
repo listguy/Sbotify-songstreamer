@@ -26,10 +26,15 @@
 
 #music {
   font-size: 5vh;
-  margin: 3vh 0;
+  margin: 5vh 0;
 }
 
 #ar-sl {
+  margin: 3vh 0 5vh;
+  width: 70%;
+}
+
+/* #ar-sl {
   margin: 5vh 0 10vh;
   list-style-type: none;
   font-size: 2.5vh;
@@ -43,4 +48,4 @@
 #ar-sl .sl-li-l {
   float: right;
   margin-right: 2vh;
-}
+} */

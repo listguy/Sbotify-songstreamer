@@ -41,11 +41,12 @@ export default function ArtistPage() {
             <h1>{data[0].title}</h1>
             <span id="ar-type">Artist</span>
           </div>
-          {/* <div id="cover"><img src={data[0].media} /></div> */}
         </div>
         <div id="music">
           Top Songs <IoMdMusicalNote />{" "}
-          <div id="ar-sl">{<SongList songs={data[2]} />}</div>
+          <div id="ar-sl">
+            {<SongList songs={data[2]} border={true} options={["album"]} />}
+          </div>
           Albums <MdAlbum />
           {<Carousela Template={Thumbnail} data={data[1]} count={3} step={1} />}
         </div>

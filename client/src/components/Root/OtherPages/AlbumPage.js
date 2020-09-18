@@ -32,10 +32,6 @@ export default function AlbumPage() {
           <span id="type">Album</span>
           <br />
           By:
-          {/* <Link to={`/watch/artist/${data.details.artist_id}`}>
-            <img id="artist-pic" src={data.details.artist_img} />
-            <span>{data.details.artist_name}</span>
-          </Link> */}
           <ArtistCircleWidg
             pic={data.details.artist_img}
             title={data.details.artist_name}
@@ -45,7 +41,7 @@ export default function AlbumPage() {
       </section>
       <section id="songs">
         <div id="al-song-list">
-          <SongList songs={data.songs} showIndex={true} />
+          <SongList songs={data.songs} showIndex={false} border={true} />
         </div>
       </section>
     </div>
