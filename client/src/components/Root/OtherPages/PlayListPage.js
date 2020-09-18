@@ -24,10 +24,11 @@ export default function PlayListPage() {
 
   const Container = styled.div`
     width: 80vw;
-    margin: 5vw 6vw;
+    margin: 0 6vw;
   `;
 
   const TopStrip = styled.div`
+    background-image: url(${"https://i.pinimg.com/originals/ba/21/2d/ba212df02c04a648597bedf6dd43fba2.jpg"});
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -64,7 +65,7 @@ export default function PlayListPage() {
   `;
   return data ? (
     <Container id="pl-container">
-      <TopStrip id="pl-top" style={{ backgroundImage: `url(${data.media})` }}>
+      <TopStrip id="pl-top">
         <div id="pl-details">
           <Header>{data.title}</Header>
           <Type id="pl-type">Playlist</Type>
@@ -80,20 +81,25 @@ export default function PlayListPage() {
               ))}
             </MoreArtists>
           )}
-          <Button
-            onClick={() => setShowMore(!showMoreWidg)}
-            style={{ marginLeft: "1vw" }}
-          >
-            {showMoreWidg ? "Show Less" : "Show More"}
-          </Button>
+          {data.artists[3] && (
+            <Button
+              onClick={() => setShowMore(!showMoreWidg)}
+              style={{ marginLeft: "1vw" }}
+            >
+              {showMoreWidg ? "Show Less" : "Show More"}
+            </Button>
+          )}
         </ArtistStrip>
       </TopStrip>
-      {/* <div id="music"> */}
-      {/* Top Songs <IoMdMusicalNote />{" "} */}
-      <div id="ar-sl">{<SongList songs={data.songs} />}</div>
-      {/* Albums <MdAlbum />
-        {<Carousela Template={Thumbnail} data={data[1]} count={3} step={1} />}
-      </div> */}
+      <div id="ar-sl">
+        {
+          <SongList
+            songs={data.songs}
+            border={true}
+            options={["album_name", "artist_name"]}
+          />
+        }
+      </div>
     </Container>
   ) : null;
 }

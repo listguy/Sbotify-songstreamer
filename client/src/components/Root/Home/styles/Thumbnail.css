@@ -1,9 +1,11 @@
 .thumbnail {
+  background-color: rgba(10, 10, 10, 0.15);
+  border-radius: 10px;
   position: relative;
   display: flex;
   flex-direction: column;
   margin: 0 1vw;
-  padding: 3vh 1vw;
+  padding: 2vh 1vw;
   word-break: normal;
   width: 20%;
   align-items: center;
@@ -12,14 +14,17 @@
 .rank {
   position: absolute;
   top: 0;
-  left: -1vw;
+  left: 0.1vw;
   font-size: 7vh;
-  text-shadow: 2px 2px 4px #000000;
+  text-shadow: 2px 6px 4px #000000;
+  font-weight: bold;
   font-style: italic;
+  z-index: 2;
 }
 .thumb-img {
   height: 12vw;
   width: 12vw;
+  margin-bottom: 1vh;
 }
 
 .overlay-options {

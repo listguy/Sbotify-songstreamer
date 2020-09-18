@@ -1,5 +1,6 @@
 import React from "react";
 import { GoPlay } from "react-icons/go";
+import { WiTime4 } from "react-icons/wi";
 import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 
@@ -13,6 +14,10 @@ export default function SongList(props) {
     width: 100%;
 
     li {
+      display: grid;
+      grid-template-columns: minmax(4vh, 6vh) 5fr ${
+        options ? `repeat(${options.length},3fr)` : ``
+      } minmax(6vh, 8vh);
       padding: 1vh 0;
       border-bottom: ${border ? `1px solid;` : `none;`}
       text-align: left;
@@ -25,29 +30,36 @@ export default function SongList(props) {
       &:hover .appear {
         display: inline-block;
       }
+      span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }  
     }
     .appear {
       display: none;
     }
-    span {
-      display: inline-block;
-      min-width: 2vw;
-      padding-left: 1vw;
-    }
-    .sl-length {
-      float: right;
-      margin-right: 1.5vw;
+
+   
+  `;
+
+  const ListHeader = styled.li`
+    font-weight: bold;
+    &:hover {
+      background-color: initial;
     }
   `;
 
   return (
     <ListWrapper>
-      <th>
-        <td>#</td>
-        <td>title</td>
-        {options && options.map((o) => <td>{o}</td>)}
-        <td>length</td>
-      </th>
+      <ListHeader>
+        <span>#</span>
+        <span>Title</span>
+        {options && options.map((o) => <span>{o.replace("-", " ")}</span>)}
+        <span>
+          <WiTime4 />
+        </span>
+      </ListHeader>
       {songs.map((song, i) => (
         <Link to={`/watch/song/${song.song_id}?${sourceQuery}`}>
           <li>

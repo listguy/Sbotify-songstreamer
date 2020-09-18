@@ -31,7 +31,7 @@ export default function SearchBar() {
   };
 
   const closeResults = () => {
-    setTimeout(() => setResultsOpen(false), 100);
+    setTimeout(() => setResultsOpen(false), 150);
   };
 
   return (
