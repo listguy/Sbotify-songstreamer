@@ -198,13 +198,14 @@ app.get("/api/search-sbotify/:query", (req, res) => {
 });
 
 app.get("/api/get_all/:table", (req, res) => {
-  const { filter, id, order } = req.query;
+  const { filter, id, order, limit = 20 } = req.query;
   const { table } = req.params;
 
   const sql = `SELECT * FROM ${table} ${
     filter && id ? `WHERE ${filter}_id=${id} ` : ``
-  }${order ? `ORDER BY ${order}` : ``}`;
-  console.log(sql);
+  }${order ? `ORDER BY ${order}` : ``}
+  LIMIT ${limit}`;
+
   database.query(sql, (e, result) => {
     if (e) return res.json(400);
     res.json(result);
