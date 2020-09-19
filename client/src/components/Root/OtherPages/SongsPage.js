@@ -7,6 +7,20 @@ import { getAllBy, getFromDB } from "../wrapper";
 import "./styles/SongPage.css";
 
 export default function SongsPage() {
+  // When trying to add following dummy data, code isn't working when coming from albums{
+  //   song: {
+  //     title: "",
+  //     media: "",
+  //   },
+  //   moreSongs: [
+  //     {
+  //       song_id: "",
+  //       title: "",
+  //       views: "--",
+  //       media: "",
+  //     },
+  //   ],
+  // }
   const [data, setData] = useState();
   const path = useLocation().pathname;
   const query = useLocation().search;
@@ -40,19 +54,29 @@ export default function SongsPage() {
             `${query ? fromWhereQuery.id : ``}`,
             order[`${fromWhereQuery.source}`]
           );
-    if (["artist", "other"].includes(fromWhereQuery.source)) {
-      console.log("here");
-      for (let i in moreSongs) {
-        if (moreSongs[i].song_id === song.song_id) {
+
+    for (let i in moreSongs) {
+      if (moreSongs[i].song_id === song.song_id) {
+        if (["artist", "other"].includes(fromWhereQuery.source)) {
           moreSongs.splice(i, 1);
+          break;
         }
+        song.track_number = i;
       }
     }
-    setData({ song, moreSongs });
+    debugger;
+    const newData = { song, moreSongs };
+    setData(newData);
   };
 
   return data ? (
     <div id="grid-container">
+      {/* {fromWhereQuery.source==="playlist"&& <span>{`Playlist: ${data.song.album_name}`}</span>} */}
+      {/* {fromWhereQuery.source === "album" && (
+          <span
+            style={{ fontSize: "2vh", fontWeight: "bold" }}
+          >{`Album: ${data.song.album_name}`}</span>
+        )} */}
       <div id="more">
         {
           <Carousela
@@ -61,7 +85,9 @@ export default function SongsPage() {
             diagonal={true}
             count={4}
             startIn={
-              fromWhereQuery.source === "album" ? data.song.track_number - 1 : 0
+              ["album", "playlist"].includes(fromWhereQuery.source)
+                ? data.song.track_number
+                : 0
             }
           />
         }
@@ -70,7 +96,19 @@ export default function SongsPage() {
         <iframe src={data.song.media.replace("watch?v=", "embed/")} />
       </div>
       <div id="s-details">
-        <h1>{data.song.title}</h1>
+        <h1>
+          {data.song.title}{" "}
+          <span
+            style={{
+              fontSize: "3vh",
+              float: "right",
+              marginRight: "12vw",
+              marginTop: "1.5vh",
+            }}
+          >
+            Views: {data.song.views + 1}
+          </span>
+        </h1>
         <span id="s-artist">
           <ArtistCircleWidg
             pic={data.song.artist_pic}
@@ -78,9 +116,11 @@ export default function SongsPage() {
             id={data.song.artist_id}
           />
         </span>
-        <Link to={`/watch/album/${data.song.album_id}`}>
-          <h2>Album: {data.song.album_name}</h2>
-        </Link>
+        <h2>
+          <Link to={`/watch/album/${data.song.album_id}`}>
+            Album: {data.song.album_name}
+          </Link>
+        </h2>
       </div>
     </div>
   ) : null;

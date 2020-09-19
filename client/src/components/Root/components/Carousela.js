@@ -8,6 +8,7 @@ import {
 import styled from "styled-components";
 
 export default function Carousela(props) {
+  debugger;
   const {
     Template,
     data,
@@ -58,6 +59,7 @@ export default function Carousela(props) {
       cursor: pointer;
     }
   `;
+  debugger;
   return (
     <Container id="carousela-container">
       <NavButton className="carousela-button" onClick={() => slide(-step)}>

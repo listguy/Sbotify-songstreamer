@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { FaPlay, FaEye } from "react-icons/fa";
 import "../styles/Thumbnail.css";
@@ -8,7 +8,7 @@ export default function Thumbnail(props) {
   let media;
   const type = Object.keys(data)[0].slice(0, -3);
 
-  if (data) {
+  if (data && data.media !== "") {
     media =
       type === "song"
         ? `https://img.youtube.com/vi/${data.media
@@ -25,7 +25,7 @@ export default function Thumbnail(props) {
           {type === "song" ? <FaPlay /> : <FaEye />}
         </div>
         <Link to={`/watch/${type}/${data[`${type}_id`]}`}>
-          <img src={media} />
+          {data.media !== "" && <img src={media} />}
         </Link>
       </div>
       <>

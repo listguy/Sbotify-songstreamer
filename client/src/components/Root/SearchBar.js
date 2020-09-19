@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getFromDB } from "./wrapper";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { IoMdMusicalNote } from "react-icons/io";
 import { MdAlbum } from "react-icons/md";
 import { GiMicrophone } from "react-icons/gi";
@@ -34,6 +34,10 @@ export default function SearchBar() {
     setTimeout(() => setResultsOpen(false), 150);
   };
 
+  const go = (type, id) => {
+    window.location.assign(`/watch/${type}/${id}`);
+  };
+
   return (
     <div id="search-container">
       <input
@@ -47,12 +51,12 @@ export default function SearchBar() {
         <div id="search-res">
           {Array.isArray(results)
             ? results.map((res) => (
-                <Link to={`/watch/${res.type}/${res.id}`}>
-                  <li>
-                    <span className="res-icon">{icons[res.type]}</span>
-                    <span className="res-title">{res.title}</span>
-                  </li>
-                </Link>
+                // <Link to={`/watch/${res.type}/${res.id}`}>
+                <li onClick={() => go(res.type, res.id)}>
+                  <span className="res-icon">{icons[res.type]}</span>
+                  <span className="res-title">{res.title}</span>
+                </li>
+                // </Link>
               ))
             : results}
         </div>

@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { FaPlay } from "react-icons/fa";
-import { Link, Redirect, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 export default function GridThumbNail(props) {
   const { data, count } = props;
@@ -40,13 +39,17 @@ export default function GridThumbNail(props) {
   const redirect = () => {
     window.location.assign(path);
   };
+  console.log(data.media !== "");
+  debugger;
   return (
     <Wrapper onClick={redirect}>
-      <Thumb
-        src={`https://img.youtube.com/vi/${data.media
-          .match(/=.*/)[0]
-          .slice(1)}/0.jpg`}
-      />
+      {
+        <Thumb
+          src={`https://img.youtube.com/vi/${data.media
+            .match(/=.*/)[0]
+            .slice(1)}/0.jpg`}
+        />
+      }
       <Details>
         <div>
           {data.title}

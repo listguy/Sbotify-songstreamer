@@ -9,8 +9,16 @@ import { GiMicrophone } from "react-icons/gi";
 import { RiPlayListFill } from "react-icons/ri";
 
 export default function TopThreeDisplay(props) {
-  const [data, setData] = useState();
   const { type } = props;
+  const [data, setData] = useState([
+    {
+      title: "",
+      media: "",
+      artist_id: "",
+      artist: "",
+      [`${type}_id`]: "",
+    },
+  ]);
   const icons = {
     songs: <IoMdMusicalNote />,
     albums: <MdAlbum />,
@@ -37,7 +45,7 @@ export default function TopThreeDisplay(props) {
   return data ? (
     <div className="top-three-display">
       <span className="category">
-        Top {type} {icons[type]}
+        Top {` ${type[0].toUpperCase()}${type.slice(1)} `} {icons[type]}
       </span>
       <Carousela Template={Thumbnail} data={data} count={5} step={1} />
     </div>

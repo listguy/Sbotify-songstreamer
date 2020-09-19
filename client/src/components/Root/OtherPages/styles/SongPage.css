@@ -19,8 +19,12 @@
   margin-left: 1vw;
 }
 
-#s-details h2,
 #s-details h1 {
+  margin-top: 0.5vh;
+  width: 100%;
+}
+
+#s-details h2 {
   margin-top: 0.5vh;
   width: fit-content;
 }
