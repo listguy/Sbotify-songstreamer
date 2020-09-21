@@ -18,14 +18,22 @@ export default function Thumbnail(props) {
   }
 
   return data ? (
-    <div className="thumbnail">
+    <div
+      className="thumbnail"
+      style={type === "artist" ? { backgroundColor: "unset" } : null}
+    >
       <span className="rank">{rank}</span>
       <div className="thumb-img">
         <div class="overlay-options">
           {type === "song" ? <FaPlay /> : <FaEye />}
         </div>
         <Link to={`/watch/${type}/${data[`${type}_id`]}`}>
-          {data.media !== "" && <img src={media} />}
+          {data.media !== "" && (
+            <img
+              src={media}
+              style={type === "artist" ? { borderRadius: "50%" } : null}
+            />
+          )}
         </Link>
       </div>
       <>

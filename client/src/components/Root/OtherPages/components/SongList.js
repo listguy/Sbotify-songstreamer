@@ -45,9 +45,8 @@ export default function SongList(props) {
 
   const ListHeader = styled.li`
     font-weight: bold;
-    &:hover {
-      background-color: initial;
-    }
+    filter: brightness(0.6);
+    font-size: 3vh;
   `;
 
   return (
@@ -55,7 +54,7 @@ export default function SongList(props) {
       <ListHeader>
         <span>#</span>
         <span>Title</span>
-        {options && options.map((o) => <span>{o.replace("-", " ")}</span>)}
+        {options && options.map((o) => <span>{o.replace("_", " ")}</span>)}
         <span>
           <WiTime4 />
         </span>
