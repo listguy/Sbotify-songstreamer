@@ -2,6 +2,9 @@ const express = require("express");
 const mysql = require("mysql");
 const PORT = 3001;
 
+// const { songs, albums, artists, playlists } = require("./routes/index");
+const songs = require("./routes/songs");
+
 //Creating a connection to MySQL
 const database = mysql.createConnection({
   host: "localhost",
@@ -18,10 +21,8 @@ database.connect((e) => {
 const app = express();
 app.use(express.json());
 
-//
-app.set("views", "./views");
-app.set("view engine", "pug");
-//
+app.use("/songs", songs); //Use songs.js file to handle /songs entrypoints.
+
 app.get("/top/:pType", (req, res) => {
   const type = req.params.pType.slice(0, -1);
   const limit = req.query.limit || 5;
