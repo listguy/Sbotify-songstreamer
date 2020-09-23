@@ -1,6 +1,6 @@
 const express = require("express");
 const mysql = require("mysql");
-const PORT = 3001;
+const PORT = process.env.PORT;
 
 // const { songs, albums, artists, playlists } = require("./routes/index");
 const songs = require("./routes/songs");

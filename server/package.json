@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "rundev": "nodemon app.js"
+    "rundev": "nodemon -r dotenv/config app.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,7 @@
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "sequelize-cli": "^6.2.0"
   }
 }

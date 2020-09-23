@@ -24,10 +24,12 @@ module.exports = (sequelize, DataTypes) => {
   Song.init(
     {
       title: DataTypes.STRING,
-      albumId: DataTypes.INTEGER,
+      albumId: { type: DataTypes.INTEGER, as: "album_id" },
       artistId: DataTypes.INTEGER,
       media: DataTypes.STRING,
       length: DataTypes.INTEGER,
+      trackNumber: DataTypes.INTEGER,
+      lyrics: DataTypes.STRING,
       views: DataTypes.INTEGER,
     },
     {

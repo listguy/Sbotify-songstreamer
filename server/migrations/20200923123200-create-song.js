@@ -20,6 +20,12 @@ module.exports = {
       media: {
         type: Sequelize.STRING,
       },
+      trackNumber: {
+        type: Sequelize.INTEGER,
+      },
+      lyrics: {
+        type: Sequelize.STRING,
+      },
       length: {
         type: Sequelize.INTEGER,
       },
