@@ -4,7 +4,8 @@ const PORT = process.env.PORT;
 
 // const { songs, albums, artists, playlists } = require("./routes/index");
 const songs = require("./routes/songs");
-
+const albums = require("./routes/albums");
+const artists = require("./routes/artists");
 //Creating a connection to MySQL
 const database = mysql.createConnection({
   host: "localhost",
@@ -22,6 +23,10 @@ const app = express();
 app.use(express.json());
 
 app.use("/songs", songs); //Use songs.js file to handle /songs entrypoints.
+
+app.use("/albums", albums);
+
+app.use("/artists", artists);
 
 app.get("/top/:pType", (req, res) => {
   const type = req.params.pType.slice(0, -1);

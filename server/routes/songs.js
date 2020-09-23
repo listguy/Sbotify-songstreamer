@@ -10,12 +10,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const song = await Song.findAll({
-    limit: 7,
-    where: {
-      id: req.params.id,
-    },
-  });
+  const song = await Song.findByPk(req.params.id);
   res.json(song);
 });
 
@@ -34,6 +29,28 @@ router.post("/", async (req, res) => {
     ],
   });
   res.json(newSong);
+});
+
+router.put("/:id", async (req, res) => {
+  const fields = req.body;
+
+  updatedSong = await Song.update(fields, {
+    where: {
+      id: req.params.id,
+    },
+  });
+
+  res.json(updatedSong);
+});
+
+router.delete("/:id", async (req, res) => {
+  await Song.destroy({
+    where: {
+      id: req.params.id,
+    },
+  });
+
+  res.status(204).end();
 });
 
 module.exports = router;
