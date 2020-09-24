@@ -16,6 +16,7 @@ export default function Carousela(props) {
     step = 1,
     diagonal = false,
     startIn = 0,
+    options,
   } = props; //Template = how to show (a component that handles your data), data = what to show(array), count= How many to show(int), step = how many to slide
   const maxStep = useMemo(() => data.length - count, [data]);
   const [curStep, setStep] = useState(clamp(startIn, 0, maxStep));
@@ -68,7 +69,9 @@ export default function Carousela(props) {
       <Surface id="surface">
         {data
           .slice(curStep, curStep + count)
-          .map((d, i) => Template({ data: d, rank: curStep + i + 1, count }))}
+          .map((d, i) =>
+            Template({ data: d, rank: curStep + i + 1, count, options })
+          )}
       </Surface>
       <NavButton className="carousela-button" onClick={() => slide(step)}>
         {diagonal ? <BiDownArrow /> : <BiRightArrow />}

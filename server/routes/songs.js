@@ -3,8 +3,8 @@ const { Song, Album, Artist } = require("../models");
 // const {  } = require("../models");
 let router = express.Router();
 
-router.get("/", async (req, res) => {
-  const limit = req.query.limit || 10000000;
+router.get("/top", async (req, res) => {
+  const limit = req.query.limit || 7;
 
   const allSongs = await Song.findAll({
     limit: Number(limit),
@@ -23,7 +23,18 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const song = await Song.findByPk(req.params.id);
+  const song = await Song.findByPk(req.params.id, {
+    include: [
+      {
+        model: Album,
+        attributes: ["title"],
+      },
+      {
+        model: Artist,
+        attributes: ["title"],
+      },
+    ],
+  });
   res.json(song);
 });
 

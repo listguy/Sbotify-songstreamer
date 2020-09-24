@@ -12,6 +12,7 @@ function getFromDB(endpoint) {
 
   return fetch(endpoint, config).then(async (res) => {
     const data = await res.json();
+    console.log(data);
     if (res.ok) return data;
     return Promise.reject(new Error(data));
   });

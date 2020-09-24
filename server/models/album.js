@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       artistId: DataTypes.INTEGER,
       media: DataTypes.STRING,
+      uploaded_at: { type: DataTypes.INTEGER, defaultValue: sequelize.NOW },
     },
     {
       sequelize,

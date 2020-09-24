@@ -11,16 +11,16 @@ module.exports = {
       title: {
         type: Sequelize.STRING,
       },
-      albumId: {
+      album_id: {
         type: Sequelize.INTEGER,
       },
-      artistId: {
+      artist_id: {
         type: Sequelize.INTEGER,
       },
       media: {
         type: Sequelize.STRING,
       },
-      trackNumber: {
+      track_number: {
         type: Sequelize.INTEGER,
       },
       lyrics: {
@@ -32,11 +32,15 @@ module.exports = {
       views: {
         type: Sequelize.INTEGER,
       },
-      createdAt: {
+      uploaded_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },

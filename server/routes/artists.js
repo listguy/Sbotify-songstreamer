@@ -4,12 +4,12 @@ const { Album } = require("../models");
 const { Artist } = require("../models");
 let router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/top", async (req, res) => {
   const limit = req.query.limit || 10000000;
 
   const allArtists = await Artist.findAll({
     limit: Number(limit),
-    include: [Album, Song],
+    // include: [Album, Song],
     //{ model: Album, include: Song } to include all songs of album, use this
   });
   res.json(allArtists);

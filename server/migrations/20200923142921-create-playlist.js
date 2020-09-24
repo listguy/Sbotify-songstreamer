@@ -14,11 +14,15 @@ module.exports = {
       media: {
         type: Sequelize.STRING,
       },
-      createdAt: {
+      uploaded_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },

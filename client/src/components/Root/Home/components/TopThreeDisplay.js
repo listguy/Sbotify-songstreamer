@@ -15,7 +15,7 @@ export default function TopThreeDisplay(props) {
       title: "",
       media: "",
       artist_id: "",
-      artist: "",
+      Artist: { title: "" },
       [`${type}_id`]: "",
     },
   ]);
@@ -27,18 +27,19 @@ export default function TopThreeDisplay(props) {
   };
 
   useEffect(() => {
-    getFromDB(`/top/${type}?limit=7`).then(async (results) => {
-      results = await Promise.all(
-        results.map((item) =>
-          getAllBy("artists", "artist", item.artist_id).then((artist) => {
-            item.artist = artist[0].title;
-            return item;
-          })
-        )
-      );
-      if (type === "playlists") console.log(results);
-      setData(results);
-    });
+    // getFromDB(`/top/${type}?limit=7`).then(async (results) => {
+    //   results = await Promise.all(
+    //     results.map((item) =>
+    //       getAllBy("artists", "artist", item.artist_id).then((artist) => {
+    //         item.artist = artist[0].title;
+    //         return item;
+    //       })
+    //     )
+    //   );
+    //   if (type === "playlists") console.log(results);
+    //   setData(results);
+    // });
+    getFromDB(`/${type}/top`).then((result) => setData(result));
   }, []);
 
   // console.log(data);
@@ -47,7 +48,13 @@ export default function TopThreeDisplay(props) {
       <span className="category">
         Top {` ${type[0].toUpperCase()}${type.slice(1)} `} {icons[type]}
       </span>
-      <Carousela Template={Thumbnail} data={data} count={5} step={1} />
+      <Carousela
+        Template={Thumbnail}
+        data={data}
+        count={5}
+        step={1}
+        options={{ type }}
+      />
     </div>
   ) : null;
 }

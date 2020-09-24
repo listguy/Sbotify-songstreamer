@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsToMany(models.Song, {
         through: models.SongsInPlaylists,
+        // foreignKey: "playlist_id",
         // // as: "playlists",
       });
     }
@@ -19,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       title: DataTypes.STRING,
       media: DataTypes.STRING,
+      uploaded_at: { type: DataTypes.INTEGER, defaultValue: sequelize.now },
     },
     {
       sequelize,
