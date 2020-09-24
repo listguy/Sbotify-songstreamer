@@ -10,6 +10,7 @@ router.get("/", async (req, res) => {
   const allArtists = await Artist.findAll({
     limit: Number(limit),
     include: [Album, Song],
+    //{ model: Album, include: Song } to include all songs of album, use this
   });
   res.json(allArtists);
 });

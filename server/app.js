@@ -6,18 +6,19 @@ const PORT = process.env.PORT;
 const songs = require("./routes/songs");
 const albums = require("./routes/albums");
 const artists = require("./routes/artists");
+const playlists = require("./routes/playlists");
 //Creating a connection to MySQL
-const database = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "nitzosql",
-  database: "songstreamer",
-});
+// const database = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "nitzosql",
+//   database: "songstreamer",
+// });
 
-database.connect((e) => {
-  if (e) return console.log("Fail", e);
-  console.log("sucsess");
-});
+// database.connect((e) => {
+//   if (e) return console.log("Fail", e);
+//   console.log("sucsess");
+// });
 
 const app = express();
 app.use(express.json());
@@ -27,6 +28,8 @@ app.use("/songs", songs); //Use songs.js file to handle /songs entrypoints.
 app.use("/albums", albums);
 
 app.use("/artists", artists);
+
+app.use("/playlists", playlists);
 
 app.get("/top/:pType", (req, res) => {
   const type = req.params.pType.slice(0, -1);
@@ -221,6 +224,8 @@ app.get("/api/get_all/:table", (req, res) => {
 app.listen(PORT, () => {
   console.log(`server listening on ${PORT}`);
 });
+
+module.exports = app;
 
 //#region Old entry point using pug
 // app.get("/watch/song/:id", (req, res) => {

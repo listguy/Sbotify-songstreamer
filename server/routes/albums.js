@@ -1,6 +1,5 @@
 const express = require("express");
-const { Song } = require("../models");
-const { Album } = require("../models");
+const { Song, Album, Artist } = require("../models");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -8,7 +7,7 @@ router.get("/", async (req, res) => {
 
   const allAlbums = await Album.findAll({
     limit: Number(limit),
-    include: Song,
+    include: [Song, { model: Artist, attributes: ["title"], as: "artist" }],
   });
   res.json(allAlbums);
 });

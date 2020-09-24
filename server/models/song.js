@@ -16,15 +16,16 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "albumId",
       });
       this.belongsToMany(models.Playlist, {
-        through: "SongsInPlaylists",
-        foreignKey: "songId",
+        through: models.SongsInPlaylists,
+        // foreignKey: "songId",
+        // as: "songs",
       });
     }
   }
   Song.init(
     {
       title: DataTypes.STRING,
-      albumId: { type: DataTypes.INTEGER, as: "album_id" },
+      albumId: DataTypes.INTEGER,
       artistId: DataTypes.INTEGER,
       media: DataTypes.STRING,
       length: DataTypes.INTEGER,

@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.belongsTo(models.Artist, {
         foreignKey: "artistId",
+        as: "artist",
       });
     }
   }
