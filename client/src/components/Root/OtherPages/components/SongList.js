@@ -7,7 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 export default function SongList(props) {
   const { songs, showIndex, border, options = undefined } = props;
   const sourceQuery = useLocation().pathname.slice(7).replace("/", "=");
-
+  console.log(props);
   const ListWrapper = styled.div`
     font-size: 2.5vh;
     list-style-type: none;
@@ -60,7 +60,7 @@ export default function SongList(props) {
         </span>
       </ListHeader>
       {songs.map((song, i) => (
-        <Link to={`/watch/song/${song.song_id}?${sourceQuery}`}>
+        <Link to={`/songs/${song.id}?${sourceQuery}`}>
           <li>
             <span className="appear">{<GoPlay />}</span>
             {showIndex ? (
@@ -69,7 +69,8 @@ export default function SongList(props) {
               <span className="dissappear">{i + 1}</span>
             )}
             <span>{song.title}</span>
-            {options && options.map((option) => <span>{song[option]}</span>)}
+            {options &&
+              options.map((option) => <span>{song[option].title}</span>)}
             <span className="sl-length">{`${Math.floor(song.length / 60)}:${(
               (song.length % 60) +
               ""

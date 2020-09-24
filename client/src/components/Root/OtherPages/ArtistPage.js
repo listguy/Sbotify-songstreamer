@@ -28,30 +28,40 @@ export default function ArtistPage() {
     // );
     // console.log(results);
     // setData(results);
-    const albums = await getFromDB(
-      `/albums/top?filter=artistId&value=${artistId}`
-    );
-    const songs = await getFromDB(
-      `/songs/top?filter=artistId&value=${artistId}`
-    );
+    // const albums = await getFromDB(
+    //   `/albums/top?filter=artistId&value=${artistId}`
+    // );
+    // const songs = await getFromDB(
+    //   `/songs/top?filter=artistId&value=${artistId}`
+    // );
+    const artist = await getFromDB(`/artists/${artistId}?limitSongs=5`);
+    setData(artist[0]);
   };
-
+  console.log(data);
   return data ? (
     <>
       <div id="ar-container">
-        <div id="ar-top" style={{ backgroundImage: `url(${data[0].media})` }}>
+        <div id="ar-top" style={{ backgroundImage: `url(${data.media})` }}>
           <div id="ar-details">
-            <h1>{data[0].title}</h1>
+            <h1>{data.title}</h1>
             <span id="ar-type">Artist</span>
           </div>
         </div>
         <div id="music">
           Top Songs <IoMdMusicalNote />{" "}
           <div id="ar-sl">
-            {<SongList songs={data[2]} border={true} options={["album"]} />}
+            {<SongList songs={data.Songs} border={true} options={["Album"]} />}
           </div>
           Albums <MdAlbum />
-          {<Carousela Template={Thumbnail} data={data[1]} count={3} step={1} />}
+          {
+            <Carousela
+              Template={Thumbnail}
+              data={data.Albums}
+              count={3}
+              step={1}
+              options={{ type: "albums" }}
+            />
+          }
         </div>
       </div>
     </>

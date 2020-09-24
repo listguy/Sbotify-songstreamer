@@ -27,7 +27,7 @@ export default function Thumbnail(props) {
         <div class="overlay-options">
           {type === "song" ? <FaPlay /> : <FaEye />}
         </div>
-        <Link to={`/watch/${type}/${data[`${type}_id`]}`}>
+        <Link to={`/${type}/${data.id}`}>
           {data.media !== "" && (
             <img
               src={media}
@@ -38,11 +38,11 @@ export default function Thumbnail(props) {
       </div>
       <>
         <span className="title">{data.title}</span>
-        <Link to={`/watch/artist/${data.artist_id}`}>
-          {data.Artist ? (
+        {data.Artist ? (
+          <Link to={`/artists/${data.Artist.id}`}>
             <span className="artist-link">{data.Artist.title}</span>
-          ) : null}
-        </Link>
+          </Link>
+        ) : null}
       </>
     </div>
   ) : null;

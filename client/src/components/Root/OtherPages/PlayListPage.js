@@ -15,8 +15,27 @@ export default function PlayListPage() {
   }, []);
 
   const fetchData = async (path) => {
-    const res = (await getFromDB(path))[0];
-    console.log(res);
+    const res = await getFromDB(path);
+
+    let distinctDetails = [
+      ...new Set(
+        res.Songs.map((song) => [
+          song.Artist.title,
+          song.Artist.media,
+          song.Artist.id,
+        ]).flat()
+      ),
+    ];
+    console.log(distinctDetails);
+    let playlistArtists = [];
+    for (let i = 0; i < distinctDetails.length - 2; i += 3) {
+      playlistArtists.push([
+        distinctDetails[i],
+        distinctDetails[i + 1],
+        distinctDetails[i + 2],
+      ]);
+    }
+    res.artists = playlistArtists;
     setData(res);
   };
 
@@ -63,6 +82,7 @@ export default function PlayListPage() {
       filter: brightness(1.3);
     }
   `;
+  console.log(data);
   return data ? (
     <Container id="pl-container">
       <TopStrip id="pl-top">
@@ -92,13 +112,7 @@ export default function PlayListPage() {
         </ArtistStrip>
       </TopStrip>
       <div id="ar-sl">
-        {
-          <SongList
-            songs={data.songs}
-            border={true}
-            options={["album_name", "artist_name"]}
-          />
-        }
+        {<SongList songs={data.Songs} border={true} options={["Artist"]} />}
       </div>
     </Container>
   ) : null;

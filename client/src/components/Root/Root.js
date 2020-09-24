@@ -22,10 +22,10 @@ export default function Root() {
       <Switch>
         <Route component={HomePage} exact path="/" />
         <Route component={ALlOfPage} exact path="/:type" />
-        <Route component={SongsPage} exact path="/watch/song/:id" />
-        <Route component={AlbumPage} exact path="/watch/album/:id" />
-        <Route component={ArtistPage} exact path="/watch/artist/:id" />
-        <Route component={PlayListPage} exact path="/watch/playlist/:id" />
+        <Route component={SongsPage} exact path="/songs/:id" />
+        <Route component={AlbumPage} exact path="/albums/:id" />
+        <Route component={ArtistPage} exact path="/artists/:id" />
+        <Route component={PlayListPage} exact path="/playlists/:id" />
         <Route component={PageNotFound} />
       </Switch>
     </Router>

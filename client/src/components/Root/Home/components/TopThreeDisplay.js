@@ -12,11 +12,10 @@ export default function TopThreeDisplay(props) {
   const { type } = props;
   const [data, setData] = useState([
     {
+      id: "",
       title: "",
       media: "",
-      artist_id: "",
-      Artist: { title: "" },
-      [`${type}_id`]: "",
+      Artist: { title: "", id: "" },
     },
   ]);
   const icons = {
@@ -39,7 +38,7 @@ export default function TopThreeDisplay(props) {
     //   if (type === "playlists") console.log(results);
     //   setData(results);
     // });
-    getFromDB(`/${type}/top`).then((result) => setData(result));
+    getFromDB(`/${type}/top?limit=10`).then((result) => setData(result));
   }, []);
 
   // console.log(data);

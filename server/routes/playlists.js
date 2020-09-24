@@ -1,5 +1,5 @@
 const express = require("express");
-const { Playlist, Song } = require("../models");
+const { Playlist, Song, Album, Artist } = require("../models");
 let router = express.Router();
 
 router.get("/top", async (req, res) => {
@@ -15,7 +15,15 @@ router.get("/:id", async (req, res) => {
   const playlist = await Playlist.findByPk(req.params.id, {
     include: {
       model: Song,
-      attributes: ["title", "artist", "album", "media", "length"],
+      attributes: ["title", "media", "length"],
+      include: {
+        model: Album,
+        attributes: ["id", "title"],
+      },
+      include: {
+        model: Artist,
+        attributes: ["id", "title", "media"],
+      },
     },
   });
 

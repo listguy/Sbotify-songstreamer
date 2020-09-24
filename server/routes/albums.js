@@ -3,6 +3,8 @@ const { Song, Album, Artist } = require("../models");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
+  const { limit } = req.query || 1000000;
+
   const allAlbums = await Album.findAll({
     limit: Number(limit),
     include: [{ model: Artist, attributes: ["title"], as: "artist" }],
@@ -12,29 +14,31 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/top", async (req, res) => {
-  const limit = req.query.limit || 10000000;
-  const filter = req.query.filter || "id";
-  const value = req.query.value || -1;
-  let allAlbums;
+  const { limit = 100000, filter = "id", value = -1 } = req.query || 10000000;
+  // let allAlbums;
+  // if (filter !== "id") {
+  //   allAlbums = await Album.findAll({
+  //     limit: Number(limit),
+  //     where: {
+  //       [filter]: value,
+  //     },
+  //     include: [{ model: Artist, attributes: ["title"], as: "artist" }],
+  //     limit: 7,
+  //   });
+  // } else {
+  //   allAlbums = await Album.findAll({
+  //     limit: Number(limit),
+  //     include: [{ model: Artist, attributes: ["title"], as: "artist" }],
+  //     limit: 7,
+  //   });
+  // }
+  const topAlbums = await Album.findAll({
+    include: { model: Artist, attributes: ["id", "title"] },
+    attributes: ["id", "title", "media"],
+    limit: Number(limit),
+  });
 
-  if (filter !== "id") {
-    allAlbums = await Album.findAll({
-      limit: Number(limit),
-      where: {
-        [filter]: value,
-      },
-      include: [{ model: Artist, attributes: ["title"], as: "artist" }],
-      limit: 7,
-    });
-  } else {
-    allAlbums = await Album.findAll({
-      limit: Number(limit),
-      include: [{ model: Artist, attributes: ["title"], as: "artist" }],
-      limit: 7,
-    });
-  }
-
-  res.json(allAlbums);
+  res.json(topAlbums);
 });
 
 router.get("/:id", async (req, res) => {
@@ -43,8 +47,8 @@ router.get("/:id", async (req, res) => {
       id: req.params.id,
     },
     include: [
-      { model: Song, attributes: ["title", "length", "track_number"] },
-      { model: Artist, attributes: ["title"], as: "artist" },
+      { model: Song, attributes: ["id", "title", "length", "track_number"] },
+      { model: Artist, attributes: ["id", "title", "media"] },
     ],
   });
   res.json(album);

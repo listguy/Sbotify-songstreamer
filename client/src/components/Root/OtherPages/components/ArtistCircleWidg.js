@@ -26,7 +26,7 @@ export default function ArtistCircleWidg(props) {
   `;
 
   return (
-    <Link to={`/watch/artist/${id}`}>
+    <Link to={`/artists/${id}`}>
       <CircleImg src={pic} />
       <NameTag>{title}</NameTag>
     </Link>
