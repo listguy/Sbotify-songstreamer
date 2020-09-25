@@ -5,10 +5,10 @@ const { Artist } = require("../models");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
-  const { limit } = req.query || 10000000;
+  const { limit } = Number(req.query) || 10000000;
 
   const allArtists = await Artist.findAll({
-    limit: Number(limit),
+    limit: limit,
     // include: [Album, Song],
     //{ model: Album, include: Song } to include all songs of album, use this
   });
@@ -16,10 +16,10 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/top", async (req, res) => {
-  const { limit } = req.query || 10000000;
+  const { limit } = Number(req.query) || 10000000;
 
   const allArtists = await Artist.findAll({
-    limit: Number(limit),
+    limit: limit,
     // include: [Album, Song],
     //{ model: Album, include: Song } to include all songs of album, use this
   });
@@ -29,16 +29,13 @@ router.get("/top", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { limitSongs } = req.query || 100000;
 
-  const artist = await Artist.findAll({
-    where: {
-      id: req.params.id,
-    },
+  const artist = await Artist.findByPk(req.params.id, {
     include: [
       { model: Album, attributes: ["id", "title", "media", "created_at"] },
       {
         model: Song,
         include: { model: Album, attributes: ["title"] },
-        attributes: ["id", "title", "length"],
+        attributes: ["id", "title", "length", "media", "views"],
         limit: Number(limitSongs),
       },
     ],

@@ -22,7 +22,7 @@ export default function AlbumPage() {
     // setData({ details: details, songs: songs });
     const album = await getFromDB(`/albums/${albumId}`);
     console.log(album);
-    setData(album[0]);
+    setData(album);
   });
 
   return data ? (

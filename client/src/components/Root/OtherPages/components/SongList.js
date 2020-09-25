@@ -6,8 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 
 export default function SongList(props) {
   const { songs, showIndex, border, options = undefined } = props;
-  const sourceQuery = useLocation().pathname.slice(7).replace("/", "=");
-  console.log(props);
+  const sourceQuery = useLocation().pathname.slice(1).replace("/", "=");
   const ListWrapper = styled.div`
     font-size: 2.5vh;
     list-style-type: none;

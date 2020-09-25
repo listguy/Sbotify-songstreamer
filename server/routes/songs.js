@@ -4,10 +4,10 @@ const { Song, Album, Artist } = require("../models");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
-  const { limit } = req.query || 1000000;
+  const { limit } = Number(req.query) || 1000000;
 
   const allSongs = await Song.findAll({
-    limit: Number(limit),
+    limit: limit,
     include: [
       {
         model: Album,
@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
       },
       {
         model: Artist,
-        attributes: ["title"],
+        attributes: ["id", "title"],
       },
     ],
   });
@@ -61,11 +61,11 @@ router.get("/:id", async (req, res) => {
     include: [
       {
         model: Album,
-        attributes: ["title"],
+        attributes: ["id", "title"],
       },
       {
         model: Artist,
-        attributes: ["title"],
+        attributes: ["id", "title", "media"],
       },
     ],
   });

@@ -58,16 +58,16 @@ export default function TopMenu() {
       </HomeButton>
       <NavButtons>
         <span>
-          <Link to="/Songs">Songs</Link>
+          <Link to="/songs">Songs</Link>
         </span>
         <span>
-          <Link to="/Albums">Albums</Link>
+          <Link to="/albums">Albums</Link>
         </span>
         <span>
-          <Link to="/Artists">Artists</Link>
+          <Link to="/artists">Artists</Link>
         </span>
         <span>
-          <Link to="/Playlists">Playlists</Link>
+          <Link to="/playlists">Playlists</Link>
         </span>
       </NavButtons>
       <SearchBar />

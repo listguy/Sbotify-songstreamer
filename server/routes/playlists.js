@@ -2,20 +2,30 @@ const express = require("express");
 const { Playlist, Song, Album, Artist } = require("../models");
 let router = express.Router();
 
-router.get("/top", async (req, res) => {
-  const limit = req.query.limit || 7;
+router.get("/", async (req, res) => {
+  const { limit } = Number(req.query) || 100000;
 
   const allPlaylists = await Playlist.findAll({
-    limit: Number(limit),
+    limit: limit,
   });
+
   res.json(allPlaylists);
+});
+
+router.get("/top", async (req, res) => {
+  const { limit } = Number(req.query) || 7;
+
+  const topPlaylists = await Playlist.findAll({
+    limit: limit,
+  });
+  res.json(topPlaylists);
 });
 
 router.get("/:id", async (req, res) => {
   const playlist = await Playlist.findByPk(req.params.id, {
     include: {
       model: Song,
-      attributes: ["title", "media", "length"],
+      attributes: ["id", "title", "media", "length", "views"],
       include: {
         model: Album,
         attributes: ["id", "title"],

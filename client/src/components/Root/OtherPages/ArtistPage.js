@@ -35,7 +35,7 @@ export default function ArtistPage() {
     //   `/songs/top?filter=artistId&value=${artistId}`
     // );
     const artist = await getFromDB(`/artists/${artistId}?limitSongs=5`);
-    setData(artist[0]);
+    setData(artist);
   };
   console.log(data);
   return data ? (

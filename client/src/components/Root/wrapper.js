@@ -44,5 +44,75 @@ function getAllBy(table, filter, id, order, limit, offset) {
   });
 }
 
-export { getAllBy, getFromDB };
+// Get By Id
+function getSingleById(type, id) {
+  const headers = { "Content-Type": "application/json" };
+  const config = {
+    method: "GET",
+    headers: headers,
+  };
+
+  console.log(
+    `Sending ${config.method} ${type} by id=${id} request to https://localhost:3001/${type}/${id}`
+  );
+
+  return fetch(`/${type}/${id}`, config).then(async (res) => {
+    const data = await res.json();
+    if (res.ok) {
+      console.log(data);
+      return data;
+    }
+    return Promise.reject(new Error(data));
+  });
+}
+
+function getAll(type, order, limit) {
+  const headers = { "Content-Type": "application/json" };
+  const config = {
+    method: "GET",
+    headers: headers,
+  };
+  const path = `${type}${order ? `?order=${order}` : ``}${
+    limit ? `&limit=${limit}` : ``
+  }`;
+
+  console.log(
+    `Sending ${config.method} all ${type} ${
+      order ? `order by ${order}` : ``
+    } request to https://localhost:3001/${path}`
+  );
+
+  return fetch("/" + path, config).then(async (res) => {
+    const data = await res.json();
+    if (res.ok) {
+      console.log(data);
+      return data;
+    }
+    return Promise.reject(new Error(data));
+  });
+}
+
+function search(query) {
+  const headers = { "Content-Type": "application/json" };
+  const config = {
+    method: "GET",
+    headers: headers,
+  };
+  const path = `/search?query=${query}`;
+
+  console.log(
+    `Sending search ${config.method} request to https://localhost:3001/${path}`
+  );
+
+  return fetch("/" + path, config).then(async (res) => {
+    const data = await res.json();
+    if (res.ok) {
+      console.log(data);
+      return data;
+    }
+    return Promise.reject(new Error(data));
+  });
+}
+
+export { getAllBy, getFromDB, getSingleById, getAll, search };
 //will add post handling later

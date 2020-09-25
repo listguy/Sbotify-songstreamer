@@ -7,12 +7,12 @@ export default function GridThumbNail(props) {
   const currentSongId = useParams().id;
   const source = useLocation().search;
 
-  const path = `/watch/song/${data.song_id}${source}`;
+  const path = `${data.id}${source}`;
 
   const Wrapper = styled.div`
   background-color:  ${
-    data.song_id + "" === currentSongId &&
-    ["album", "playlist"].includes(source.match(/\w+/)[0])
+    data.id + "" === currentSongId &&
+    ["albums", "playlists"].includes(source.match(/\w+/)[0])
       ? `rgba(230,230,230,0.4);`
       : ``
   }
@@ -39,8 +39,7 @@ export default function GridThumbNail(props) {
   const redirect = () => {
     window.location.assign(path);
   };
-  console.log(data.media !== "");
-  debugger;
+
   return (
     <Wrapper onClick={redirect}>
       {

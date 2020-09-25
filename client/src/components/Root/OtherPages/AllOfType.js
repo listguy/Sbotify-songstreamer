@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Thumbnail from "../Home/components/Thumbnail";
-import { getAllBy } from "../wrapper";
+import { getAll, getAllBy } from "../wrapper";
 
 export default function AllOfType(props) {
   const [data, setData] = useState();
   const { type } = useParams();
   const legitPath = ["songs", "albums", "artists", "playlists"];
 
-  const fetchData = async (path) => {
-    if (!legitPath.includes(path.toLowerCase()))
+  const fetchData = async (type) => {
+    if (!legitPath.includes(type.toLowerCase()))
       props.history.push("/page/not/found");
-    const fetchedData = await getAllBy(path, "", "", "title");
+
+    const fetchedData = await getAll(type);
     setData(fetchedData);
   };
 
@@ -42,7 +43,7 @@ export default function AllOfType(props) {
       {data ? (
         <Grid>
           {data.map((d) => (
-            <Thumbnail data={d} />
+            <Thumbnail data={d} options={{ type }} />
           ))}
         </Grid>
       ) : null}

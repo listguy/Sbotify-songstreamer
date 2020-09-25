@@ -1,37 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaPlay, FaEye } from "react-icons/fa";
 import "../styles/Thumbnail.css";
 
 export default function Thumbnail(props) {
   const { data, rank, options } = props;
-  let media;
   const type = options.type;
 
-  if (data && data.media !== "") {
-    media =
-      type === "songs"
-        ? `https://img.youtube.com/vi/${data.media
-            .match(/=.*/)[0]
-            .slice(1)}/0.jpg`
-        : data.media;
-  }
+  // useEffect(() => {
+  //   if (data && data.media !== "") {
+  //     media =
+  //       type === "songs"
+  //         ? `https://img.youtube.com/vi/${data.media
+  //             .match(/=.*/)[0]
+  //             .slice(1)}/0.jpg`
+  //         : data.media;
+  //   }
+  // }, [type]);
 
   return data ? (
     <div
       className="thumbnail"
-      style={type === "artist" ? { backgroundColor: "unset" } : null}
+      style={type === "artists" ? { backgroundColor: "unset" } : null}
     >
       <span className="rank">{rank}</span>
       <div className="thumb-img">
         <div class="overlay-options">
-          {type === "song" ? <FaPlay /> : <FaEye />}
+          {type === "songs" ? <FaPlay /> : <FaEye />}
         </div>
         <Link to={`/${type}/${data.id}`}>
           {data.media !== "" && (
             <img
-              src={media}
-              style={type === "artist" ? { borderRadius: "50%" } : null}
+              src={
+                type === "songs"
+                  ? `https://img.youtube.com/vi/${data.media
+                      .match(/=.*/)[0]
+                      .slice(1)}/0.jpg`
+                  : data.media
+              }
+              style={type === "artists" ? { borderRadius: "50%" } : null}
             />
           )}
         </Link>
