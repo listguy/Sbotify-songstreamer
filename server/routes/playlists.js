@@ -3,10 +3,11 @@ const { Playlist, Song, Album, Artist } = require("../models");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
-  const { limit } = Number(req.query) || 100000;
+  const { limit, order = "ASC" } = Number(req.query) || 100000;
 
   const allPlaylists = await Playlist.findAll({
     limit: limit,
+    order: [["title", order]],
   });
 
   res.json(allPlaylists);

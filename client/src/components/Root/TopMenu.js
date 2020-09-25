@@ -13,6 +13,7 @@ export default function TopMenu() {
     align-items: center;
     height: 10vh;
     width: 100%;
+    margin-bottom: 4vh;
 
     span {
       cursor: pointer;

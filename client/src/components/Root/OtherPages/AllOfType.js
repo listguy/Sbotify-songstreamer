@@ -5,7 +5,7 @@ import Thumbnail from "../Home/components/Thumbnail";
 import { getAll, getAllBy } from "../wrapper";
 
 export default function AllOfType(props) {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const { type } = useParams();
   const legitPath = ["songs", "albums", "artists", "playlists"];
 
@@ -40,7 +40,7 @@ export default function AllOfType(props) {
   return (
     <>
       <Header>All {type}</Header>
-      {data ? (
+      {data[0] ? (
         <Grid>
           {data.map((d) => (
             <Thumbnail data={d} options={{ type }} />

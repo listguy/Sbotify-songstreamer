@@ -4,7 +4,7 @@ const { Song, Album, Artist } = require("../models");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
-  const { limit } = Number(req.query) || 1000000;
+  const { limit, order = "ASC" } = Number(req.query) || 1000000;
 
   const allSongs = await Song.findAll({
     limit: limit,
@@ -18,6 +18,7 @@ router.get("/", async (req, res) => {
         attributes: ["id", "title"],
       },
     ],
+    order: [["title", order]],
   });
 
   res.json(allSongs);
@@ -25,12 +26,29 @@ router.get("/", async (req, res) => {
 
 router.get("/top", async (req, res) => {
   const limit = req.query.limit || 100000;
-  const filters = {
-    artist: "artistId",
-    album: "albumId",
-    title: "title",
-  };
-  const query = {
+  // const query = {
+  //   limit: Number(limit),
+  //   include: [
+  //     {
+  //       model: Album,
+  //       attributes: ["title"],
+  //     },
+  //     {
+  //       model: Artist,
+  //       attributes: ["title"],
+  //     },
+  //   ],
+  // };
+  // const filterBy = req.query.filterBy;
+  // const value = req.query.value;
+
+  // if (filters[filterBy] && value) {
+  //   query.where = {
+  //     [filters[filterBy]]: value,
+  //   };
+  // }
+
+  const topSongs = await Song.findAll({
     limit: Number(limit),
     include: [
       {
@@ -42,17 +60,8 @@ router.get("/top", async (req, res) => {
         attributes: ["title"],
       },
     ],
-  };
-  const filterBy = req.query.filterBy;
-  const value = req.query.value;
-
-  if (filters[filterBy] && value) {
-    query.where = {
-      [filters[filterBy]]: value,
-    };
-  }
-  console.log(filterBy);
-  const topSongs = await Song.findAll(query);
+    order: [["views", "Desc"]],
+  });
   res.json(topSongs);
 });
 
@@ -69,6 +78,16 @@ router.get("/:id", async (req, res) => {
       },
     ],
   });
+
+  //increment views
+  Song.update(
+    { views: song.views + 1 },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  );
   res.json(song);
 });
 

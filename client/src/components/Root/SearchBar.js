@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getFromDB } from "./wrapper";
+import { search } from "./wrapper";
 import { Link, Redirect } from "react-router-dom";
 import { IoMdMusicalNote } from "react-icons/io";
 import { MdAlbum } from "react-icons/md";
@@ -22,7 +22,7 @@ export default function SearchBar() {
       setResults("");
       return;
     }
-    const newRes = await getFromDB(`/api/search-sbotify/${searchInput}`);
+    const newRes = await search(searchInput);
     !newRes[0] ? setResults("No results found :/") : setResults(newRes);
   };
 
@@ -35,7 +35,7 @@ export default function SearchBar() {
   };
 
   const go = (type, id) => {
-    window.location.assign(`/watch/${type}/${id}`);
+    window.location.assign(`/${type}s/${id}`);
   };
 
   return (

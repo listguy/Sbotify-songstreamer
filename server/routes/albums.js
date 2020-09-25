@@ -1,13 +1,15 @@
 const express = require("express");
 const { Song, Album, Artist } = require("../models");
+const sequelize = require("sequelize");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
-  const { limit } = Number(req.query) || 1000000;
+  const { limit, order = "ASC" } = Number(req.query) || 1000000;
 
   const allAlbums = await Album.findAll({
     limit: limit,
     include: [{ model: Artist, attributes: ["id", "title"] }],
+    order: [["title", order]],
   });
 
   res.json(allAlbums);
@@ -34,9 +36,19 @@ router.get("/top", async (req, res) => {
   //   });
   // }
   const topAlbums = await Album.findAll({
-    include: { model: Artist, attributes: ["id", "title"] },
+    include: [
+      { model: Artist, attributes: ["id", "title"] },
+      // {
+      //   model: Song,
+      //   attributes: [
+      //     [sequelize.fn("SUM", sequelize.col("Songs.views")), "totalViews"],
+      //   ],
+      // },
+      // { model: Song, attributes: [[sequelize.fn('SUM', sequelize.col("views")), "totalViews"]] },
+    ],
     attributes: ["id", "title", "media"],
     limit: Number(limit),
+    // order: [["songs.totalViews", "DESC"]],
   });
 
   res.json(topAlbums);

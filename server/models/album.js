@@ -7,6 +7,14 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
+    async getTotalViews() {
+      const allSongs = await this.getSongs({
+        attributes: ["views"],
+      });
+      console.log(allSongs);
+      console.log(Math.sum(...allSongs));
+    }
     static associate(models) {
       // define association here
       this.hasMany(models.Song, {

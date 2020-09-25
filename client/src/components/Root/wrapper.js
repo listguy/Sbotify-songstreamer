@@ -98,7 +98,7 @@ function search(query) {
     method: "GET",
     headers: headers,
   };
-  const path = `/search?query=${query}`;
+  const path = `search?query=${query}`;
 
   console.log(
     `Sending search ${config.method} request to https://localhost:3001/${path}`
