@@ -10,17 +10,17 @@ const albums = require("./routes/albums");
 const artists = require("./routes/artists");
 const playlists = require("./routes/playlists");
 // Creating a connection to MySQL
-const database = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "nitzosql",
-  database: "songstreamer",
-});
+// const database = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "nitzosql",
+//   database: "songstreamer",
+// });
 
-database.connect((e) => {
-  if (e) return console.log("Fail", e);
-  console.log("sucsess");
-});
+// database.connect((e) => {
+//   if (e) return console.log("Fail", e);
+//   console.log("sucsess");
+// });
 
 const app = express();
 app.use(express.json());

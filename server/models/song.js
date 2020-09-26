@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       trackNumber: DataTypes.INTEGER,
       lyrics: DataTypes.STRING,
       views: { type: DataTypes.INTEGER, defaultValue: 0 },
-      uploaded_at: { type: DataTypes.INTEGER, defaultValue: sequelize.NOW },
+      uploadedAt: { type: DataTypes.INTEGER, defaultValue: sequelize.NOW },
     },
     {
       sequelize,

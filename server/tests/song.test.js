@@ -10,7 +10,7 @@ const fakeSong = {
   trackNumber: 2,
   length: 123,
   views: 0,
-  createdAt: "2020-01-01",
+  createdAt: "2010-01-01",
 };
 
 describe("Songs test", () => {
@@ -20,8 +20,11 @@ describe("Songs test", () => {
 
   it("can add song", async () => {
     const { body } = await request(app).post("/songs").send(fakeSong);
+    fakeSong.id = body.id;
     console.log(body);
-    expect(body.title).toBe(fakeSong.title);
+    const addedSong = await Song.findByPk(fakeSong.id);
+    console.log(addedSong);
+    expect(fakeSong.title).toBe(body.title);
   });
 
   it("can get song", async () => {

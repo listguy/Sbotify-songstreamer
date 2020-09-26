@@ -1,5 +1,12 @@
 const express = require("express");
-const { Playlist, Song, Album, Artist } = require("../models");
+const {
+  Playlist,
+  Song,
+  Album,
+  Artist,
+  SongsInPlaylists,
+} = require("../models");
+const { Op } = require("sequelize");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -39,6 +46,67 @@ router.get("/:id", async (req, res) => {
   });
 
   res.json(playlist);
+});
+
+router.post("/", async (req, res) => {
+  const { body } = req;
+
+  body.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+  //Not sure if necasary with paranoid:
+  body.id =
+    (
+      await Playlist.findAll({
+        where: {
+          title: {
+            [Op.ne]: null,
+          },
+        },
+      })
+    ).length + 1;
+
+  try {
+    const newPlaylist = await Playlist.create(body, {
+      fields: ["id", "title", "media", "uploadedAt"],
+    });
+
+    const newId = newPlaylist.id;
+    const playlistSongs = body.songs.map((song) => {
+      song.playlistId = newId;
+      return song;
+    }); //Adding the new playlists id to all songs objects
+
+    const songs = await SongsInPlaylists.bulkCreate(playlistSongs, {
+      fields: ["songId", "playlistId"],
+    });
+
+    newPlaylist.songs = songs; //Not working
+    res.json(newPlaylist);
+  } catch (e) {
+    console.log(e);
+    res.status(400).send({ msg: "Malformed data" });
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  const fields = req.body;
+
+  updatedPlaylist = await Playlist.update(fields, {
+    where: {
+      id: req.params.id,
+    },
+  });
+
+  res.json(updatedPlaylist);
+});
+
+router.delete("/:id", async (req, res) => {
+  await Playlist.destroy({
+    where: {
+      id: req.params.id,
+    },
+  });
+
+  res.status(204).end();
 });
 
 module.exports = router;

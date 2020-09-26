@@ -1,7 +1,6 @@
 const express = require("express");
-const { Song } = require("../models");
-const { Album } = require("../models");
-const { Artist } = require("../models");
+const { Song, Album, Artist } = require("../models");
+const { Op } = require("sequelize");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -45,8 +44,30 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const newArtist = await Artist.create(req.body);
-  res.json(newArtist);
+  const { body } = req;
+
+  body.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+  //Not sure if necasary with paranoid:
+  body.id =
+    (
+      await Artist.findAll({
+        where: {
+          title: {
+            [Op.ne]: null,
+          },
+        },
+      })
+    ).length + 1;
+
+  try {
+    const newArtist = await Artist.create(body, {
+      fields: ["id", "title", "media", "uploadedAt"],
+    });
+    res.json(newArtist);
+  } catch (e) {
+    console.log(e);
+    res.status(400).send({ msg: "Malformed data" });
+  }
 });
 
 router.put("/:id", async (req, res) => {

@@ -1,6 +1,6 @@
 const express = require("express");
 const { Song, Album, Artist } = require("../models");
-// const {  } = require("../models");
+const { Op } = require("sequelize");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -26,27 +26,6 @@ router.get("/", async (req, res) => {
 
 router.get("/top", async (req, res) => {
   const limit = req.query.limit || 100000;
-  // const query = {
-  //   limit: Number(limit),
-  //   include: [
-  //     {
-  //       model: Album,
-  //       attributes: ["title"],
-  //     },
-  //     {
-  //       model: Artist,
-  //       attributes: ["title"],
-  //     },
-  //   ],
-  // };
-  // const filterBy = req.query.filterBy;
-  // const value = req.query.value;
-
-  // if (filters[filterBy] && value) {
-  //   query.where = {
-  //     [filters[filterBy]]: value,
-  //   };
-  // }
 
   const topSongs = await Song.findAll({
     limit: Number(limit),
@@ -92,20 +71,40 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const newSong = await Song.create(req.body, {
-    fields: [
-      "albumId",
-      "artistId",
-      "title",
-      "media",
-      "trackNumber",
-      "lyrics",
-      "length",
-      "views",
-      "createdAt",
-    ],
-  });
-  res.json(newSong);
+  const { body } = req;
+
+  body.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+  //Not sure if necasary with paranoid:
+  body.id =
+    (
+      await Song.findAll({
+        where: {
+          title: {
+            [Op.ne]: null,
+          },
+        },
+      })
+    ).length + 1;
+  try {
+    const newSong = await Song.create(req.body, {
+      fields: [
+        "id",
+        "albumId",
+        "artistId",
+        "title",
+        "media",
+        "trackNumber",
+        "lyrics",
+        "length",
+        "views",
+        "uploadedAt",
+      ],
+    });
+    res.json(newSong);
+  } catch (e) {
+    console.log(e);
+    res.status(400).send({ msg: "Malformed data" });
+  }
 });
 
 router.put("/:id", async (req, res) => {
