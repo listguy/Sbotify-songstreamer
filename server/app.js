@@ -2,7 +2,6 @@ const express = require("express");
 const mysql = require("mysql");
 const { Artist, Album, Song, Playlist } = require("./models");
 const { Op } = require("sequelize");
-const PORT = process.env.PORT;
 
 // const { songs, albums, artists, playlists } = require("./routes/index");
 const songs = require("./routes/songs");
@@ -56,10 +55,6 @@ app.get("/search", async (req, res) => {
   );
 
   res.json(matchedResults.flat());
-});
-
-app.listen(PORT, () => {
-  console.log(`server listening on ${PORT}`);
 });
 
 module.exports = app;

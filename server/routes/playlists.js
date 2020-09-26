@@ -48,25 +48,15 @@ router.get("/:id", async (req, res) => {
   res.json(playlist);
 });
 
+//need to improve below methods, so child are affected too.
 router.post("/", async (req, res) => {
   const { body } = req;
 
   body.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
-  //Not sure if necasary with paranoid:
-  body.id =
-    (
-      await Playlist.findAll({
-        where: {
-          title: {
-            [Op.ne]: null,
-          },
-        },
-      })
-    ).length + 1;
 
   try {
     const newPlaylist = await Playlist.create(body, {
-      fields: ["id", "title", "media", "uploadedAt"],
+      fields: ["title", "media", "uploadedAt"],
     });
 
     const newId = newPlaylist.id;
@@ -107,6 +97,17 @@ router.delete("/:id", async (req, res) => {
   });
 
   res.status(204).end();
+});
+
+router.delete("/:id/hardDelete", async (req, res) => {
+  await Playlist.destroy({
+    where: {
+      id: req.params.id,
+    },
+    force: true,
+  });
+
+  res.send("Deleted permanatly");
 });
 
 module.exports = router;

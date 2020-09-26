@@ -4,7 +4,7 @@ import { ImSpotify, ImUser } from "react-icons/im";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const backgroundColor = "rgb(15,15,15)";
+const backgroundColor = "rgba(15,15,15,0.85)";
 
 export default function TopMenu() {
   const TopMenu = styled.div`
@@ -25,6 +25,7 @@ export default function TopMenu() {
     span {
       margin: 0 1vh;
       font-size: 2.5vh;
+      border-radius: 5px;
       &:hover {
         transition: 1s ease-in-out;
         background-color: rgba(230, 230, 230, 0.8);
@@ -42,6 +43,7 @@ export default function TopMenu() {
   const Profile = styled.span`
     margin-left: auto;
     margin-right: 3vw;
+    border-radius: 10px;
 
     &:hover {
       transition: 1s ease-in-out;
@@ -54,7 +56,7 @@ export default function TopMenu() {
     <TopMenu>
       <HomeButton>
         <Link to="/">
-          Sbotify <ImSpotify color="red" />
+          Sbotify <ImSpotify />
         </Link>
       </HomeButton>
       <NavButtons>

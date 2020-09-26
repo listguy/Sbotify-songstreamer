@@ -72,21 +72,10 @@ router.post("/", async (req, res) => {
   const { body } = req;
 
   body.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
-  //Not sure if necasary with paranoid:
-  body.id =
-    (
-      await Album.findAll({
-        where: {
-          title: {
-            [Op.ne]: null,
-          },
-        },
-      })
-    ).length + 1;
 
   try {
     const newAlbum = await Album.create(body, {
-      fields: ["id", "title", "artistId", "media", "uploadedAt"],
+      fields: ["title", "artistId", "media", "uploadedAt"],
     });
     res.json(newAlbum);
   } catch (e) {
@@ -115,6 +104,17 @@ router.delete("/:id", async (req, res) => {
   });
 
   res.status(204).end();
+});
+
+router.delete("/:id/hardDelete", async (req, res) => {
+  await Album.destroy({
+    where: {
+      id: req.params.id,
+    },
+    force: true,
+  });
+
+  res.send("Deleted permanantly");
 });
 
 module.exports = router;

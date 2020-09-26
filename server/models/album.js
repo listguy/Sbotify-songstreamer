@@ -30,11 +30,12 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       artistId: DataTypes.INTEGER,
       media: DataTypes.STRING,
-      uploadedAt: { type: DataTypes.INTEGER, defaultValue: sequelize.NOW },
+      uploadedAt: { type: DataTypes.DATE, defaultValue: sequelize.NOW },
     },
     {
       sequelize,
       modelName: "Album",
+      paranoid: true,
     }
   );
   return Album;

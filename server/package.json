@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "rundev": "nodemon -r dotenv/config app.js"
+    "rundev": "nodemon -r dotenv/config index.js",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
+    "db:create:test": "cross-env NODE_ENV=test npx sequelize-cli db:create",
+    "db:migrate:test": "cross-env NODE_ENV=test npx sequelize db:migrate"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "jest": "^26.4.2",
     "sequelize-cli": "^6.2.0",
