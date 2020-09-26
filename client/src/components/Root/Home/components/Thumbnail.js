@@ -6,17 +6,8 @@ import "../styles/Thumbnail.css";
 export default function Thumbnail(props) {
   const { data, rank, options } = props;
   const type = options.type;
-
-  // useEffect(() => {
-  //   if (data && data.media !== "") {
-  //     media =
-  //       type === "songs"
-  //         ? `https://img.youtube.com/vi/${data.media
-  //             .match(/=.*/)[0]
-  //             .slice(1)}/0.jpg`
-  //         : data.media;
-  //   }
-  // }, [type]);
+  const isSongMedia = /www.youtube.com\/watch/.test(data.media);
+  // fixed songs page bug for now with this check. however, i preffer to moun the component everty time path changes.
 
   return data ? (
     <div
@@ -32,7 +23,7 @@ export default function Thumbnail(props) {
           {data.media !== "" && (
             <img
               src={
-                type === "songs"
+                isSongMedia
                   ? `https://img.youtube.com/vi/${data.media
                       .match(/=.*/)[0]
                       .slice(1)}/0.jpg`

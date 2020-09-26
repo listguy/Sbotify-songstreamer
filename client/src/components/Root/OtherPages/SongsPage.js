@@ -94,12 +94,6 @@ export default function SongsPage() {
 
   return data ? (
     <div id="grid-container">
-      {/* {fromWhereQuery.source==="playlist"&& <span>{`Playlist: ${data.song.album_name}`}</span>} */}
-      {/* {fromWhereQuery.source === "album" && (
-          <span
-            style={{ fontSize: "2vh", fontWeight: "bold" }}
-          >{`Album: ${data.song.album_name}`}</span>
-        )} */}
       <div id="more">
         {
           <Carousela
