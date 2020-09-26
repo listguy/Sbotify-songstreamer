@@ -1,6 +1,8 @@
 const express = require("express");
 const { Song, Album, Artist } = require("../models");
 const { Op } = require("sequelize");
+const { raw } = require("mysql");
+const { query } = require("express");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -16,7 +18,9 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/top", async (req, res) => {
-  const { limit = 100000, order = "" } = req.query;
+  const limit = Number(req.query.limit) || 100000;
+  console.log(limit);
+  //#region comments
   // const { limit = 100000, filter = "id", value = -1 } = req.query || 10000000;
   // let allAlbums;
   // if (filter !== "id") {
@@ -35,23 +39,35 @@ router.get("/top", async (req, res) => {
   //     limit: 7,
   //   });
   // }
+  //#endregion
   const topAlbums = await Album.findAll({
+    limit: limit,
     include: [
-      { model: Artist, attributes: ["id", "title"] },
-      // {
-      //   model: Song,
-      //   attributes: [
-      //     [sequelize.fn("SUM", sequelize.col("Songs.views")), "totalViews"],
-      //   ],
-      // },
-      // { model: Song, attributes: [[sequelize.fn('SUM', sequelize.col("views")), "totalViews"]] },
+      {
+        model: Artist,
+        attributes: ["title"],
+      },
     ],
     attributes: ["id", "title", "media"],
-    limit: Number(limit),
-    // order: [["songs.totalViews", "DESC"]],
   });
 
-  res.json(topAlbums);
+  const songs = await Album.findAll({
+    include: [{ model: Song, attributes: ["views"] }],
+    attributes: ["id"],
+    limit: limit,
+  });
+
+  let combined = [];
+  for (let i = 0; i < songs.length; i++) {
+    let counterViews = 0;
+    songs[i].toJSON().Songs.forEach((obj) => (counterViews += obj.views));
+    topAlbums[i].dataValues.views = counterViews;
+    combined.push(topAlbums[i]);
+  }
+  combined = combined.sort((a, b) => {
+    return a.toJSON().views - b.toJSON().views;
+  });
+  res.json(combined.reverse());
 });
 
 router.get("/:id", async (req, res) => {

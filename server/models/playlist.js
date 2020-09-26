@@ -20,7 +20,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       title: DataTypes.STRING,
       media: DataTypes.STRING,
-      uploadedAt: { type: DataTypes.INTEGER, defaultValue: sequelize.now },
+      uploadedAt: {
+        field: "uploaded_at",
+        type: DataTypes.DATE,
+        defaultValue: sequelize.now,
+      },
     },
     {
       sequelize,

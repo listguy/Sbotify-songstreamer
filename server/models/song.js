@@ -25,14 +25,18 @@ module.exports = (sequelize, DataTypes) => {
   Song.init(
     {
       title: DataTypes.STRING,
-      albumId: DataTypes.INTEGER,
-      artistId: DataTypes.INTEGER,
+      albumId: { field: "album_id", type: DataTypes.INTEGER },
+      artistId: { field: "artist_id", type: DataTypes.INTEGER },
       media: DataTypes.STRING,
       length: DataTypes.INTEGER,
-      trackNumber: DataTypes.INTEGER,
+      trackNumber: { field: "track_number", type: DataTypes.INTEGER },
       lyrics: DataTypes.STRING,
       views: { type: DataTypes.INTEGER, defaultValue: 0 },
-      uploadedAt: { type: DataTypes.INTEGER, defaultValue: sequelize.NOW },
+      uploadedAt: {
+        field: "uploaded_at",
+        type: DataTypes.DATE,
+        defaultValue: sequelize.now,
+      },
     },
     {
       sequelize,

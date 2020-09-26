@@ -18,12 +18,29 @@ router.get("/", async (req, res) => {
 router.get("/top", async (req, res) => {
   const { limit } = Number(req.query) || 10000000;
 
-  const allArtists = await Artist.findAll({
+  const topArtists = await Artist.findAll({
     limit: limit,
     // include: [Album, Song],
     //{ model: Album, include: Song } to include all songs of album, use this
   });
-  res.json(allArtists);
+
+  const songs = await Artist.findAll({
+    include: [{ model: Song, attributes: ["views"] }],
+    attributes: ["id"],
+    limit: limit,
+  });
+
+  let combined = [];
+  for (let i = 0; i < songs.length; i++) {
+    let counterViews = 0;
+    songs[i].toJSON().Songs.forEach((obj) => (counterViews += obj.views));
+    topArtists[i].dataValues.views = counterViews;
+    combined.push(topArtists[i]);
+  }
+  combined = combined.sort((a, b) => {
+    return a.toJSON().views - b.toJSON().views;
+  });
+  res.json(combined.reverse());
 });
 
 router.get("/:id", async (req, res) => {

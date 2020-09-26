@@ -10,7 +10,7 @@ const { Op } = require("sequelize");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
-  const { limit, order = "ASC" } = Number(req.query) || 100000;
+  const { limit = 100000, order = "ASC" } = req.query;
 
   const allPlaylists = await Playlist.findAll({
     limit: limit,
@@ -26,7 +26,25 @@ router.get("/top", async (req, res) => {
   const topPlaylists = await Playlist.findAll({
     limit: limit,
   });
-  res.json(topPlaylists);
+
+  const songs = await Playlist.findAll({
+    include: [{ model: Song, attributes: ["views"] }],
+    attributes: ["id"],
+    limit: limit,
+  });
+
+  let combined = [];
+  for (let i = 0; i < songs.length; i++) {
+    let counterViews = 0;
+    songs[i].toJSON().Songs.forEach((obj) => (counterViews += obj.views));
+    topPlaylists[i].dataValues.views = counterViews;
+    combined.push(topPlaylists[i]);
+  }
+  combined = combined.sort((a, b) => {
+    return a.toJSON().views - b.toJSON().views;
+  });
+  res.json(combined.reverse());
+  // res.json(topPlaylists);
 });
 
 router.get("/:id", async (req, res) => {

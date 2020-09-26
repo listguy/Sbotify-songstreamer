@@ -8,7 +8,7 @@ export default function ArtistCircleWidg(props) {
   const CircleImg = styled.img`
     width: 3vw;
     height: 3vw;
-    border-radius: 50px;
+    border-radius: 50%;
     margin-left: 2vw;
     margin-right: 0.5vw;
 

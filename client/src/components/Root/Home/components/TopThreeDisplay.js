@@ -41,7 +41,6 @@ export default function TopThreeDisplay(props) {
     getFromDB(`/${type}/top?limit=10`).then((result) => setData(result));
   }, []);
 
-  // console.log(data);
   return data ? (
     <div className="top-three-display">
       <span className="category">

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "rundev": "nodemon -r dotenv/config index.js",
+    "dev": "nodemon -r dotenv/config index.js",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "db:create:test": "cross-env NODE_ENV=test npx sequelize-cli db:create",
     "db:migrate:test": "cross-env NODE_ENV=test npx sequelize db:migrate"

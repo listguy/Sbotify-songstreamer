@@ -28,9 +28,17 @@ module.exports = (sequelize, DataTypes) => {
   Album.init(
     {
       title: DataTypes.STRING,
-      artistId: DataTypes.INTEGER,
+      artistId: {
+        field: "artist_id",
+        type: DataTypes.INTEGER,
+      },
+
       media: DataTypes.STRING,
-      uploadedAt: { type: DataTypes.DATE, defaultValue: sequelize.NOW },
+      uploadedAt: {
+        field: "uploaded_at",
+        type: DataTypes.DATE,
+        defaultValue: sequelize.NOW,
+      },
     },
     {
       sequelize,
