@@ -62,15 +62,20 @@ router.get("/:id", async (req, res) => {
 
 //need to improve below methods, so child are affected too.
 router.post("/", async (req, res) => {
-  const { body } = req;
+  let body = Array.isArray(req.body) ? req.body : [req.body];
+  body = body.map((artist) => {
+    artist.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+    return artist;
+  });
+  // body.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
-  body.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
-
+  console.log(body);
   try {
-    const newArtist = await Artist.create(body, {
+    const newArtists = await Artist.bulkCreate(body, {
       fields: ["title", "media", "uploadedAt"],
     });
-    res.json(newArtist);
+
+    res.json(newArtists);
   } catch (e) {
     console.log(e);
     res.status(400).send({ msg: "Malformed data" });
@@ -84,9 +89,9 @@ router.put("/:id", async (req, res) => {
     where: {
       id: req.params.id,
     },
+    fields: ["title", "media"],
   });
-
-  res.json(updatedArtist);
+  res.json({ sucsess: updatedArtist[0] === 1 });
 });
 
 router.delete("/:id", async (req, res) => {

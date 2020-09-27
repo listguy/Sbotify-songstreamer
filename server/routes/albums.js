@@ -85,12 +85,14 @@ router.get("/:id", async (req, res) => {
 
 //need to improve below methods, so child are affected too.
 router.post("/", async (req, res) => {
-  const { body } = req;
-
-  body.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+  let body = Array.isArray(req.body) ? req.body : [req.body];
+  body = body.map((album) => {
+    album.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+    return album;
+  });
 
   try {
-    const newAlbum = await Album.create(body, {
+    const newAlbum = await Album.bulkCreate(body, {
       fields: ["title", "artistId", "media", "uploadedAt"],
     });
     res.json(newAlbum);
@@ -107,9 +109,10 @@ router.put("/:id", async (req, res) => {
     where: {
       id: req.params.id,
     },
+    fields: ["title", "media", "artist_id"],
   });
 
-  res.json(updatedAlbum);
+  res.json({ sucsess: updatedAlbum[0] === 1 });
 });
 
 router.delete("/:id", async (req, res) => {

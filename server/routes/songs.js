@@ -71,9 +71,11 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { body } = req;
-
-  body.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+  let body = Array.isArray(req.body) ? req.body : [req.body];
+  body = body.map((song) => {
+    song.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+    return song;
+  });
 
   try {
     const newSong = await Song.create(req.body, {
@@ -103,9 +105,19 @@ router.put("/:id", async (req, res) => {
     where: {
       id: req.params.id,
     },
+    fields: [
+      "title",
+      "media",
+      "artist_id",
+      "album_id",
+      "track_number",
+      "length",
+      "lyrics",
+      "views",
+    ],
   });
 
-  res.json(updatedSong);
+  res.json({ sucsess: updatedSong === 1 });
 });
 
 router.delete("/:id", async (req, res) => {

@@ -68,27 +68,37 @@ router.get("/:id", async (req, res) => {
 
 //need to improve below methods, so child are affected too.
 router.post("/", async (req, res) => {
-  const { body } = req;
-
-  body.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+  let body = Array.isArray(req.body) ? req.body : [req.body];
+  body = body.map((playlist) => {
+    playlist.uploadedAt = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
+    return playlist;
+  });
 
   try {
-    const newPlaylist = await Playlist.create(body, {
+    const newPlaylists = await Playlist.bulkCreate(body, {
       fields: ["title", "media", "uploadedAt"],
     });
 
-    const newId = newPlaylist.id;
-    const playlistSongs = body.songs.map((song) => {
-      song.playlistId = newId;
-      return song;
+    console.log(newPlaylists);
+    const playlistSongs = newPlaylists.map((playlist, i) => {
+      let curPlelistId = playlist.toJSON().id;
+      let songList = body[i].songs.map((song) => {
+        song.playlistId = curPlelistId;
+        return song;
+      });
+      playlist.dataValues.songs = songList;
+      return songList;
     }); //Adding the new playlists id to all songs objects
 
-    const songs = await SongsInPlaylists.bulkCreate(playlistSongs, {
+    // console.log(playlistSongs);
+    await SongsInPlaylists.bulkCreate(playlistSongs.flat(), {
       fields: ["songId", "playlistId"],
     });
-
-    newPlaylist.songs = songs; //Not working
-    res.json(newPlaylist);
+    // newPlaylist.songs = songs; //Not working
+    res.json(newPlaylists);
   } catch (e) {
     console.log(e);
     res.status(400).send({ msg: "Malformed data" });
@@ -102,9 +112,10 @@ router.put("/:id", async (req, res) => {
     where: {
       id: req.params.id,
     },
+    fields: ["title", "media"],
   });
 
-  res.json(updatedPlaylist);
+  res.json({ sucsess: updatedPlaylist === 1 });
 });
 
 router.delete("/:id", async (req, res) => {
