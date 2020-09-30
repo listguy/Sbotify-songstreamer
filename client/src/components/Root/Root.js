@@ -13,21 +13,27 @@ import {
   PlayListPage,
   PageNotFound,
   ALlOfPage,
+  Login,
 } from "./OtherPages";
 
 export default function Root() {
   return (
-    <Router>
-      <TopMenu />
+    <>
       <Switch>
-        <Route component={HomePage} exact path="/" />
-        <Route component={ALlOfPage} exact path="/:type" />
-        <Route component={SongsPage} exact path="/songs/:id" />
-        <Route component={AlbumPage} exact path="/albums/:id" />
-        <Route component={ArtistPage} exact path="/artists/:id" />
-        <Route component={PlayListPage} exact path="/playlists/:id" />
-        <Route component={PageNotFound} />
+        <Route component={Login} path="/login" />
+        <Router>
+          <TopMenu />
+          <Switch>
+            <Route component={HomePage} exact path="/" />
+            <Route component={ALlOfPage} exact path="/:type" />
+            <Route component={SongsPage} exact path="/songs/:id" />
+            <Route component={AlbumPage} exact path="/albums/:id" />
+            <Route component={ArtistPage} exact path="/artists/:id" />
+            <Route component={PlayListPage} exact path="/playlists/:id" />
+            <Route component={PageNotFound} />
+          </Switch>
+        </Router>
       </Switch>
-    </Router>
+    </>
   );
 }

@@ -1,6 +1,9 @@
 // Get data to display on screen from '/watch' entry points
 function getFromDB(endpoint) {
-  const headers = { "Content-Type": "application/json" };
+  const headers = {
+    "Content-Type": "application/json",
+    "auth-token": getToken(),
+  };
   const config = {
     method: "GET",
     headers: headers,
@@ -12,8 +15,11 @@ function getFromDB(endpoint) {
 
   return fetch(endpoint, config).then(async (res) => {
     const data = await res.json();
-    console.log(data);
+    console.log(res);
     if (res.ok) return data;
+    if (res.status === 403) {
+      window.location = "/login";
+    }
     return Promise.reject(new Error(data));
   });
 }
@@ -44,9 +50,17 @@ function getAllBy(table, filter, id, order, limit, offset) {
   });
 }
 
+const getToken = () => {
+  return localStorage.getItem("LIT");
+};
+
 // Get By Id
 function getSingleById(type, id) {
-  const headers = { "Content-Type": "application/json" };
+  const headers = {
+    "Content-Type": "application/json",
+    "auth-token": getToken(),
+  };
+
   const config = {
     method: "GET",
     headers: headers,
@@ -57,17 +71,25 @@ function getSingleById(type, id) {
   );
 
   return fetch(`/${type}/${id}`, config).then(async (res) => {
+    console.log("wrapper here");
     const data = await res.json();
+    console.log(res);
     if (res.ok) {
       console.log(data);
       return data;
+    }
+    if (res.status === 403) {
+      window.location = "/login";
     }
     return Promise.reject(new Error(data));
   });
 }
 
 function getAll(type, order, limit) {
-  const headers = { "Content-Type": "application/json" };
+  const headers = {
+    "Content-Type": "application/json",
+    "auth-token": getToken(),
+  };
   const config = {
     method: "GET",
     headers: headers,
@@ -84,9 +106,14 @@ function getAll(type, order, limit) {
 
   return fetch("/" + path, config).then(async (res) => {
     const data = await res.json();
+    console.log(res);
+
     if (res.ok) {
       console.log(data);
       return data;
+    }
+    if (res.status === 403) {
+      window.location = "/login";
     }
     return Promise.reject(new Error(data));
   });
@@ -114,5 +141,30 @@ function search(query) {
   });
 }
 
-export { getAllBy, getFromDB, getSingleById, getAll, search };
+function login(cardentials) {
+  console.log(cardentials);
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  const config = {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(cardentials),
+  };
+
+  console.log(
+    `Sending ${config.method} request to https://localhost:3001/user/login`
+  );
+
+  return fetch(`/user/login`, config).then(async (res) => {
+    const data = await res.json();
+    console.log(data);
+    if (res.ok || res.status === 400) {
+      return data;
+    }
+    return Promise.reject(new Error(data));
+  });
+}
+export { getAllBy, getFromDB, getSingleById, getAll, search, login };
 //will add post handling later

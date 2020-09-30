@@ -8,6 +8,10 @@ const songs = require("./routes/songs");
 const albums = require("./routes/albums");
 const artists = require("./routes/artists");
 const playlists = require("./routes/playlists");
+const user = require("./routes/user");
+
+//Require auth middleware
+const tokenCheck = require("./middleware/verifyToken").auth;
 // Creating a connection to MySQL
 // const database = mysql.createConnection({
 //   host: "localhost",
@@ -24,13 +28,15 @@ const playlists = require("./routes/playlists");
 const app = express();
 app.use(express.json());
 
-app.use("/songs", songs); //Use songs.js file to handle /songs entrypoints.
+app.use("/user", user);
 
-app.use("/albums", albums);
+app.use("/songs", tokenCheck, songs); //Use songs.js file to handle /songs entrypoints.
 
-app.use("/artists", artists);
+app.use("/albums", tokenCheck, albums);
 
-app.use("/playlists", playlists);
+app.use("/artists", tokenCheck, artists);
+
+app.use("/playlists", tokenCheck, playlists);
 
 app.get("/search", async (req, res) => {
   const { query } = req.query;
