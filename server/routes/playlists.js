@@ -44,7 +44,6 @@ router.get("/top", async (req, res) => {
     return a.toJSON().views - b.toJSON().views;
   });
   res.json(combined.reverse());
-  // res.json(topPlaylists);
 });
 
 router.get("/:id", async (req, res) => {
@@ -93,11 +92,10 @@ router.post("/", async (req, res) => {
       return songList;
     }); //Adding the new playlists id to all songs objects
 
-    // console.log(playlistSongs);
     await SongsInPlaylists.bulkCreate(playlistSongs.flat(), {
       fields: ["songId", "playlistId"],
     });
-    // newPlaylist.songs = songs; //Not working
+
     res.json(newPlaylists);
   } catch (e) {
     console.log(e);

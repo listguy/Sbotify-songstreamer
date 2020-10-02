@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { FaPlay, FaEye } from "react-icons/fa";
 import "../styles/Thumbnail.css";
@@ -7,7 +7,7 @@ export default function Thumbnail(props) {
   const { data, rank, options } = props;
   const type = options.type;
   const isSongMedia = /www.youtube.com\/watch/.test(data.media);
-  // fixed songs page bug for now with this check. however, i preffer to moun the component everty time path changes.
+  // fixed songs page bug for now with this check. however, i preffer to mount the component every time path changes.
 
   return data ? (
     <div

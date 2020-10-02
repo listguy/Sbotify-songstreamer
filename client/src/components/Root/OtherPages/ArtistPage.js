@@ -19,21 +19,10 @@ export default function ArtistPage() {
   ];
 
   useEffect(() => {
-    fetchAllData(pathes);
+    fetchAllData();
   }, [path]);
 
-  const fetchAllData = async (p) => {
-    // const results = await Promise.all(
-    //   p.map((path) => getFromDB(path).then((d) => d))
-    // );
-    // console.log(results);
-    // setData(results);
-    // const albums = await getFromDB(
-    //   `/albums/top?filter=artistId&value=${artistId}`
-    // );
-    // const songs = await getFromDB(
-    //   `/songs/top?filter=artistId&value=${artistId}`
-    // );
+  const fetchAllData = async () => {
     const artist = await getFromDB(`/artists/${artistId}?limitSongs=5`);
     setData(artist);
   };

@@ -1,6 +1,5 @@
 const express = require("express");
 const { Song, Album, Artist } = require("../models");
-const { Op } = require("sequelize");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -9,7 +8,6 @@ router.get("/", async (req, res) => {
   const allArtists = await Artist.findAll({
     limit: limit,
     order: [["title", order]],
-    // include: [Album, Song],
     //{ model: Album, include: Song } to include all songs of album, use this
   });
   res.json(allArtists);
@@ -20,7 +18,6 @@ router.get("/top", async (req, res) => {
 
   const topArtists = await Artist.findAll({
     limit: limit,
-    // include: [Album, Song],
     //{ model: Album, include: Song } to include all songs of album, use this
   });
 
@@ -67,7 +64,6 @@ router.post("/", async (req, res) => {
     artist.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
     return artist;
   });
-  // body.uploadedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   console.log(body);
   try {

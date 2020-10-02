@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getFromDB } from "../wrapper";
 import ArtistCircleWidg from "./components/ArtistCircleWidg";
 import SongList from "./components/SongList";

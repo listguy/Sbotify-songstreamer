@@ -1,20 +1,23 @@
 import React from "react";
 import SearchBar from "./SearchBar";
-import { ImSpotify, ImUser } from "react-icons/im";
+import UserMenu from "./components/UserMenu";
+import { ImSpotify } from "react-icons/im";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const backgroundColor = "rgba(15,15,15,0.85)";
+const backgroundColor = "rgba(15,15,15,0.95)";
 
 export default function TopMenu() {
   const TopMenu = styled.div`
     background-color: ${backgroundColor};
     display: flex;
+    position: sticky;
+    top: 0;
     align-items: center;
     height: 10vh;
     width: 100%;
     margin-bottom: 4vh;
-
+    z-index: 4;
     span {
       cursor: pointer;
       padding: 0.5vw;
@@ -40,18 +43,6 @@ export default function TopMenu() {
     color: white;
   `;
 
-  const Profile = styled.span`
-    margin-left: auto;
-    margin-right: 3vw;
-    border-radius: 10px;
-
-    &:hover {
-      transition: 1s ease-in-out;
-      background-color: rgba(240, 240, 240, 0.85);
-      color: ${backgroundColor};
-    }
-  `;
-
   return (
     <TopMenu>
       <HomeButton>
@@ -74,10 +65,7 @@ export default function TopMenu() {
         </span>
       </NavButtons>
       <SearchBar />
-      <Profile>
-        <ImUser fontSize="4vh" />
-        <span>Hello, User.</span>
-      </Profile>
+      <UserMenu backgroundColor={backgroundColor} />
     </TopMenu>
   );
 }

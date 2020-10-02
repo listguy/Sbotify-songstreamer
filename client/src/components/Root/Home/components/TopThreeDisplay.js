@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getAllBy, getFromDB } from "../../wrapper.js";
+import { getFromDB } from "../../wrapper.js";
 import Thumbnail from "./Thumbnail";
 import Carousela from "../../components/Carousela";
 import "../styles/TopThreeDisplay.css";
@@ -26,18 +26,6 @@ export default function TopThreeDisplay(props) {
   };
 
   useEffect(() => {
-    // getFromDB(`/top/${type}?limit=7`).then(async (results) => {
-    //   results = await Promise.all(
-    //     results.map((item) =>
-    //       getAllBy("artists", "artist", item.artist_id).then((artist) => {
-    //         item.artist = artist[0].title;
-    //         return item;
-    //       })
-    //     )
-    //   );
-    //   if (type === "playlists") console.log(results);
-    //   setData(results);
-    // });
     getFromDB(`/${type}/top?limit=10`).then((result) => setData(result));
   }, []);
 
@@ -56,18 +44,3 @@ export default function TopThreeDisplay(props) {
     </div>
   ) : null;
 }
-
-// return data ? (
-//   <>
-//     <span className="category">
-//       Top 4 {type} {icons[type]}
-//     </span>
-//     <div className="top-three-display">
-//       {data.map((obj, i) => (
-//         <Thumbnail data={obj} type={type.slice(0, -1)} rank={i + 1} />
-//       ))}
-//     </div>
-//   </>
-// ) : null;
-
-// Trying to make carousle
