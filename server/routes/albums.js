@@ -1,8 +1,5 @@
 const express = require("express");
 const { Song, Album, Artist } = require("../models");
-const { Op } = require("sequelize");
-const { raw } = require("mysql");
-const { query } = require("express");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -20,26 +17,6 @@ router.get("/", async (req, res) => {
 router.get("/top", async (req, res) => {
   const limit = Number(req.query.limit) || 100000;
   console.log(limit);
-  //#region comments
-  // const { limit = 100000, filter = "id", value = -1 } = req.query || 10000000;
-  // let allAlbums;
-  // if (filter !== "id") {
-  //   allAlbums = await Album.findAll({
-  //     limit: Number(limit),
-  //     where: {
-  //       [filter]: value,
-  //     },
-  //     include: [{ model: Artist, attributes: ["title"], as: "artist" }],
-  //     limit: 7,
-  //   });
-  // } else {
-  //   allAlbums = await Album.findAll({
-  //     limit: Number(limit),
-  //     include: [{ model: Artist, attributes: ["title"], as: "artist" }],
-  //     limit: 7,
-  //   });
-  // }
-  //#endregion
   const topAlbums = await Album.findAll({
     limit: limit,
     include: [

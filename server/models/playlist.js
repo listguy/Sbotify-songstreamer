@@ -11,8 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsToMany(models.Song, {
         through: models.SongsInPlaylists,
-        // foreignKey: "playlist_id",
-        // // as: "playlists",
       });
     }
   }
