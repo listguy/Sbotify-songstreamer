@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Redirect } from "react-router-dom";
+import { UserContext } from "../userContext";
 import { login } from "../wrapper";
 import styled from "styled-components";
 
@@ -6,6 +8,7 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { loggedUser, setLoggedUser } = useContext(UserContext);
 
   const onSubmit = async () => {
     console.log(username + "" + password);
@@ -16,7 +19,9 @@ export default function Login() {
     console.log(response);
     if (response && response.success && response.token) {
       localStorage.setItem("LIT", response.token); //LIT = LogIn Token
+      localStorage.setItem("loggedUser", username); //Current logged user
       window.location = "/";
+      // setLoggedUser(username);
     } else {
       console.log(response.msg);
       setError(response.msg);
@@ -55,25 +60,31 @@ export default function Login() {
   `;
   return (
     <>
-      <Header>Welcome to Sbotify</Header>
-      <Container>
-        <Line>
-          <Desc>Username</Desc>
-          <Field
-            value={username}
-            onChange={({ target: { value } }) => setUsername(value)}
-          />
-        </Line>
-        <Line>
-          <Desc>Password</Desc>
-          <Field
-            value={password}
-            onChange={({ target: { value } }) => setPassword(value)}
-          />
-        </Line>
-        <button onClick={onSubmit}>Login</button>
-        {error ? <div>*{error}</div> : null}
-      </Container>
+      {loggedUser ? (
+        <Redirect to="/" />
+      ) : (
+        <>
+          <Header>Welcome to Sbotify</Header>
+          <Container>
+            <Line>
+              <Desc>Username</Desc>
+              <Field
+                value={username}
+                onChange={({ target: { value } }) => setUsername(value)}
+              />
+            </Line>
+            <Line>
+              <Desc>Password</Desc>
+              <Field
+                value={password}
+                onChange={({ target: { value } }) => setPassword(value)}
+              />
+            </Line>
+            <button onClick={onSubmit}>Login</button>
+            {error ? <div>*{error}</div> : null}
+          </Container>
+        </>
+      )}
     </>
   );
 }
