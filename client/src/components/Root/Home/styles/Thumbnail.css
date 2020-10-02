@@ -1,0 +1,65 @@
+.thumbnail {
+  background-color: rgba(10, 10, 10, 0.15);
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0 1vw;
+  padding: 2vh 1vw;
+  word-break: normal;
+  align-items: center;
+}
+
+.rank {
+  position: absolute;
+  top: 0;
+  left: 0.1vw;
+  font-size: 7vh;
+  text-shadow: 2px 6px 4px #000000;
+  font-weight: bold;
+  font-style: italic;
+  z-index: 2;
+}
+
+.thumb-img {
+  background-image: rgba(0, 0, 0, 0);
+  height: 12vw;
+  width: 12vw;
+  margin-bottom: 1vh;
+}
+
+.overlay-options {
+  position: absolute;
+  opacity: 0;
+  font-size: 8vh;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.thumbnail img {
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+}
+
+.thumb-img:hover .overlay-options {
+  transition: 1s ease;
+  opacity: 1;
+  color: white;
+}
+.thumb-img:hover img {
+  opacity: 0.5;
+  transition: 0.5s ease;
+}
+
+.title {
+  text-align: center;
+  font-size: 1vw;
+  font-style: italic;
+}
+
+.artist-link:hover {
+  font-weight: bold;
+  filter: brightness(2);
+}

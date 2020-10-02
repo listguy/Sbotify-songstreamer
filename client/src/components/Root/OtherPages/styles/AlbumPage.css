@@ -1,0 +1,34 @@
+#container {
+  background-color: rgba(220, 220, 220, 0.02);
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+  margin-left: 8vw;
+  padding: 2vw;
+}
+
+#top {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 3vh;
+}
+
+#details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2vw;
+}
+#title {
+  font-size: 10vh;
+  font-weight: bold;
+}
+
+#cover img {
+  height: 15vw;
+  width: 15vw;
+}
+
+#al-song-list {
+  width: 95%;
+}

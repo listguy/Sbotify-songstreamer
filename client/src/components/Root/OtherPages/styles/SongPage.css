@@ -1,0 +1,51 @@
+#grid-container {
+  display: grid;
+  height: 80vh;
+  width: 95vw;
+  grid-template-columns: 2fr 3fr;
+  grid-template-areas:
+    "more video "
+    "more details";
+  margin: 5vh auto;
+}
+
+#more {
+  grid-area: more;
+  width: 80%;
+  height: 75vh;
+}
+#s-details {
+  grid-area: details;
+  margin-left: 1vw;
+}
+
+#s-details h1 {
+  margin-top: 0.5vh;
+  width: 100%;
+}
+
+#s-details h2 {
+  margin-top: 0.5vh;
+  width: fit-content;
+}
+
+#s-details h2:hover {
+  cursor: pointer;
+  filter: brightness(1.5);
+}
+
+#s-artist {
+  margin-right: 4vw;
+  float: right;
+}
+
+#video {
+  grid-area: video;
+}
+
+iframe {
+  padding: 1vh;
+  border: none;
+  width: 90%;
+  height: 55vh;
+}
