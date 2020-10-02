@@ -142,7 +142,6 @@ function search(query) {
 }
 
 function login(cardentials) {
-  console.log(cardentials);
   const headers = {
     "Content-Type": "application/json",
   };
@@ -166,5 +165,31 @@ function login(cardentials) {
     return Promise.reject(new Error(data));
   });
 }
-export { getAllBy, getFromDB, getSingleById, getAll, search, login };
+
+function register(cardentials) {
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  const config = {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(cardentials),
+  };
+
+  console.log(
+    `Sending ${config.method} request to https://localhost:3001/user/register`
+  );
+
+  return fetch(`/user/register`, config).then(async (res) => {
+    const data = await res.json();
+    console.log(data);
+    if (res.ok || res.status === 400) {
+      return data;
+    }
+    return Promise.reject(new Error(data));
+  });
+}
+
+export { getAllBy, getFromDB, getSingleById, getAll, search, login, register };
 //will add post handling later

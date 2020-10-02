@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import { UserContext } from "./userContext";
 import HomePage from "./Home";
-import SearchBar from "./SearchBar";
 import TopMenu from "./TopMenu";
 
 import {
@@ -20,6 +19,7 @@ import {
   ALlOfPage,
   Login,
 } from "./OtherPages";
+import Register from "./OtherPages/Register";
 
 export default function Root() {
   const isLoggedIn = localStorage.getItem("LIT");
@@ -38,8 +38,11 @@ export default function Root() {
       <UserContext.Provider value={providerValue}>
         {!isLoggedIn ? (
           <>
-            <Redirect to="/login" />
-            <Route component={Login} path="/login" />
+            <Switch>
+              <Route component={Login} path="/login" />
+              <Route component={Register} path="/register" />
+              <Redirect to="/login" />
+            </Switch>
           </>
         ) : (
           <>

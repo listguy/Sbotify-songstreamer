@@ -5,6 +5,7 @@ import PlayListPage from "./PlayListPage";
 import PageNotFound from "./PageNotFound";
 import ALlOfPage from "./AllOfType";
 import Login from "./Login";
+import Register from "./Register";
 
 export {
   AlbumPage,
@@ -14,4 +15,5 @@ export {
   PageNotFound,
   ALlOfPage,
   Login,
+  Register,
 };

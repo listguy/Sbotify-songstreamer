@@ -5,22 +5,25 @@ const jwt = require("jsonwebtoken");
 const { loginValidation } = require("../validation");
 
 router.post("/register", async (req, res) => {
-  //All validations are done by sequelize.
+  //User & Email validations are done by sequelize.
+  //Password length is checked here, if check fails i skip hashing to trigger DB error
 
-  //Hash password
-  const salt = await bcrypt.genSalt(10);
-  const hashPassword = await bcrypt.hash(req.body.password, salt);
+  if (req.body.password.length >= 8 && req.body.password.length <= 30) {
+    //Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(req.body.password, salt);
+    //overrun old password
+    req.body.password = hashPassword;
+  }
 
-  //overrun old password
-  req.body.password = hashPassword;
   //Create a new user. If one of the validation fails, the respond will be 400
   //and a proper error message will be sent
   try {
-    const newUser = await User.create(req.body, {
+    await User.create(req.body, {
       fields: ["username", "email", "password"],
     });
 
-    res.json({ msg: `Welcome to Sbotify ${newUser.toJSON().username}!` });
+    res.json({ success: true });
   } catch (e) {
     res.status(400).send(e);
   }

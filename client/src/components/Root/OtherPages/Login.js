@@ -1,17 +1,18 @@
-import React, { useContext, useState } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useContext, useRef, useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { UserContext } from "../userContext";
 import { login } from "../wrapper";
 import styled from "styled-components";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const userRef = useRef();
+  const passwordRef = useRef();
   const [error, setError] = useState("");
   const { loggedUser, setLoggedUser } = useContext(UserContext);
 
   const onSubmit = async () => {
-    console.log(username + "" + password);
+    const username = userRef.current.value;
+    const password = passwordRef.current.value;
     const response = await login({
       username,
       password,
@@ -58,6 +59,37 @@ export default function Login() {
   const Desc = styled.span`
     margin-left: 0.5vw;
   `;
+
+  const Button = styled.button`
+    background-color: rgba(20, 20, 20, 0.45);
+    width: 20%;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 1.5vh;
+    margin-left: auto;
+
+    &:hover {
+      background-color: rgba(20, 20, 20, 0.6);
+      cursor: pointer;
+      transition: 0.5s ease;
+    }
+  `;
+
+  const StyledLink = styled.a`
+    color: rgb(30, 30, 30);
+    &:hover {
+      cursor: pointer;
+      color: white;
+      transition: 0.5s ease;
+    }
+  `;
+
+  const ErrMsg = styled.div`
+    color: rgb(220, 20, 30);
+    font-weight: bold;
+  `;
+
   return (
     <>
       {loggedUser ? (
@@ -68,20 +100,20 @@ export default function Login() {
           <Container>
             <Line>
               <Desc>Username</Desc>
-              <Field
-                value={username}
-                onChange={({ target: { value } }) => setUsername(value)}
-              />
+              <Field ref={userRef} />
             </Line>
             <Line>
               <Desc>Password</Desc>
-              <Field
-                value={password}
-                onChange={({ target: { value } }) => setPassword(value)}
-              />
+              <Field ref={passwordRef} type="password" />
             </Line>
-            <button onClick={onSubmit}>Login</button>
-            {error ? <div>*{error}</div> : null}
+            <Line>
+              <Desc style={{ fontSize: "1.5vh" }}>
+                Don't have a user?{" "}
+                <StyledLink href="/register">Join Us</StyledLink>
+              </Desc>
+              <Button onClick={onSubmit}>Login</Button>
+            </Line>
+            {error ? <ErrMsg>*{error.replace(/"/g, "")}</ErrMsg> : null}
           </Container>
         </>
       )}
