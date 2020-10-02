@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { search } from "./wrapper";
-import { Link, Redirect } from "react-router-dom";
 import { IoMdMusicalNote } from "react-icons/io";
 import { MdAlbum } from "react-icons/md";
 import { GiMicrophone } from "react-icons/gi";
@@ -51,12 +50,10 @@ export default function SearchBar() {
         <div id="search-res">
           {Array.isArray(results)
             ? results.map((res) => (
-                // <Link to={`/watch/${res.type}/${res.id}`}>
                 <li onClick={() => go(res.type, res.id)}>
                   <span className="res-icon">{icons[res.type]}</span>
                   <span className="res-title">{res.title}</span>
                 </li>
-                // </Link>
               ))
             : results}
         </div>

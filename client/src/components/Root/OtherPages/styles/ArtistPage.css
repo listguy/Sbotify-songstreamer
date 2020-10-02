@@ -6,7 +6,6 @@
 #ar-top {
   background-repeat: no-repeat;
   background-position-x: center;
-  /* background-color: linear-gradient(to right, #dee5ec, #9f9fb1); */
   background-position-y: 15%;
   background-size: cover;
   width: 100%;
@@ -33,19 +32,3 @@
   margin: 3vh 0 5vh;
   width: 70%;
 }
-
-/* #ar-sl {
-  margin: 5vh 0 10vh;
-  list-style-type: none;
-  font-size: 2.5vh;
-  width: 60%;
-}
-
-#ar-sl span {
-  margin-left: 2vw;
-}
-
-#ar-sl .sl-li-l {
-  float: right;
-  margin-right: 2vh;
-} */

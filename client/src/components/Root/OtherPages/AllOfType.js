@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Redirect, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Thumbnail from "../Home/components/Thumbnail";
-import { getAll, getAllBy } from "../wrapper";
+import { getAll } from "../wrapper";
 
 export default function AllOfType(props) {
   const [data, setData] = useState([]);

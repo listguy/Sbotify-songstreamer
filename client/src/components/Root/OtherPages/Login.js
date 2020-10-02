@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { UserContext } from "../userContext";
 import { login } from "../wrapper";
 import styled from "styled-components";
@@ -22,7 +22,6 @@ export default function Login() {
       localStorage.setItem("LIT", response.token); //LIT = LogIn Token
       localStorage.setItem("loggedUser", username); //Current logged user
       window.location = "/";
-      // setLoggedUser(username);
     } else {
       console.log(response.msg);
       setError(response.msg);

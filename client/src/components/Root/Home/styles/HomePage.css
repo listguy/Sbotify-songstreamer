@@ -1,6 +1,4 @@
 body {
-  /* background: linear-gradient(to right, #536976, #292e49); */
-  /* background: linear-gradient(to right, #1b1c1d, #626264); */
   background: radial-gradient(
     circle,
     rgba(126, 125, 80, 1) 0%,
@@ -11,14 +9,3 @@ body {
   color: wheat;
   background-attachment: fixed;
 }
-
-/* #head {
-  width: 90vw;
-  margin: 0 auto;
-  display: flex;
-  align-items: baseline;
-}
-
-.header {
-  font-size: 2.5em;
-} */

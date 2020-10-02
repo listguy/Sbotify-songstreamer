@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
-  Link,
   Switch,
   Redirect,
 } from "react-router-dom";

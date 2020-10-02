@@ -7,6 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 export default function SongList(props) {
   const { songs, showIndex, border, options = undefined } = props;
   const sourceQuery = useLocation().pathname.slice(1).replace("/", "=");
+
   const ListWrapper = styled.div`
     font-size: 2.5vh;
     list-style-type: none;
@@ -80,68 +81,3 @@ export default function SongList(props) {
     </ListWrapper>
   );
 }
-
-// const ListWrapper = styled.div`
-//   font-size: 2.5vh;
-//   list-style-type: none;
-//   width: 100%;
-//   margin-left: 0;
-
-//   li {
-//     padding: 1vh 0;
-//     border-bottom: ${border ? `1px solid;` : `none;`}
-//     text-align: left;
-//     &:hover {
-//       background-color: rgba(240, 240, 240, 0.05);
-//     }
-//     &:hover .dissappear {
-//       display: none;
-//     }
-//     &:hover .appear {
-//       display: inline-block;
-//     }
-//   }
-//   .appear {
-//     display: none;
-//   }
-//   span {
-//     display: inline-block;
-//     min-width: 2vw;
-//     padding-left: 1vw;
-//   }
-//   .sl-length {
-//     float: right;
-//     margin-right: 1.5vw;
-//   }
-// `;
-
-// const ListWrapper = styled.table`
-//     font-size: 2.5vh;
-//     margin-left: 0;
-//     width: 100%;
-
-//     tr {
-//       padding: 1vh 0;
-//       border-bottom: ${border ? `1px solid;` : `none;`}
-//       text-align: left;
-//       &:hover {
-//         background-color: rgba(240, 240, 240, 0.05);
-//       }
-//       &:hover .dissappear {
-//         display: none;
-//       }
-//       &:hover .appear {
-//         display: inline-block;
-//       }
-//     }
-//     .appear {
-//       display: none;
-//     }
-//     td {
-//       padding: .5vw;
-//       min-width: 2vw;
-//     }
-//     .sl-length {
-//       margin-right: 1.5vw;
-//     }
-//   `;

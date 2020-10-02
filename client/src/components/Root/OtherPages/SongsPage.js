@@ -3,7 +3,7 @@ import { useLocation, Link, useParams } from "react-router-dom";
 import Carousela from "../components/Carousela";
 import GridThumbNail from "./components/GridThumbNail";
 import ArtistCircleWidg from "./components/ArtistCircleWidg";
-import { getAllBy, getFromDB, getSingleById } from "../wrapper";
+import { getFromDB, getSingleById } from "../wrapper";
 import "./styles/SongPage.css";
 
 export default function SongsPage() {
@@ -43,37 +43,9 @@ export default function SongsPage() {
 
   useEffect(() => {
     fetchData(curId, fromWhereQuery);
-    //Add views upddate
   }, [path]);
 
   const fetchData = async (curId, fromWhereQuery) => {
-    // const song = await getFromDB(path);
-    // const artist_pic = (await getAllBy("artists", "artist", song.artist_id))[0]
-    //   .media;
-    // song.artist_pic = artist_pic;
-
-    // const moreSongs =
-    //   fromWhereQuery.source === "playlist"
-    //     ? (await getFromDB(`/watch/playlist/${fromWhereQuery.id}`))[0].songs
-    //     : await getAllBy(
-    //         `songs`,
-    //         `${query ? fromWhereQuery.source : ``}`,
-    //         `${query ? fromWhereQuery.id : ``}`,
-    //         order[`${fromWhereQuery.source}`]
-    //       );
-
-    // for (let i in moreSongs) {
-    //   if (moreSongs[i].song_id === song.song_id) {
-    //     if (["artist", "other"].includes(fromWhereQuery.source)) {
-    //       moreSongs.splice(i, 1);
-    //       break;
-    //     }
-    //     song.track_number = i;
-    //   }
-    // }
-    // debugger;
-    // const newData = { song, moreSongs };
-    // setData(newData);
     const song = await getSingleById("songs", curId);
     const suggestedSongs =
       fromWhereQuery.source !== "other"

@@ -89,28 +89,15 @@ export default function Register() {
       <Container>
         <Line>
           <Desc>Username:</Desc>
-          <Field
-            ref={userRef}
-
-            // onChange={({ target: { value } }) => setUsername(value)}
-          />
+          <Field ref={userRef} />
         </Line>
         <Line>
           <Desc>Email:</Desc>
-          <Field
-            ref={emailRef}
-
-            // onChange={({ target: { value } }) => setUsername(value)}
-          />
+          <Field ref={emailRef} />
         </Line>
         <Line>
           <Desc>Password:</Desc>
-          <Field
-            type="password"
-            ref={passwordRef}
-
-            // onChange={({ target: { value } }) => setPassword(value)}
-          />
+          <Field type="password" ref={passwordRef} />
         </Line>
         <Button onClick={onSubmit}>Register</Button>
         {error[0] ? (

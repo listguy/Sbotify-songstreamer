@@ -1,12 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ImUser } from "react-icons/im";
-import { UserContext } from "../userContext";
 
 export default function UserMenu(props) {
   const [showMenu, setShowMenu] = useState(false);
-  // const username = useContext(UserContext);
-  // const { loggedUser, setLoggedUser } = useContext(UserContext);
   const loggedUser = localStorage.getItem("loggedUser");
   const Wrapper = styled.div`
     display: flex;
@@ -57,7 +54,6 @@ export default function UserMenu(props) {
   const logout = () => {
     localStorage.removeItem("LIT");
     localStorage.removeItem("loggedUser");
-    // setLoggedUser(null);
     window.location = "/login";
   };
   return (

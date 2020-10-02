@@ -24,31 +24,31 @@ function getFromDB(endpoint) {
   });
 }
 
-// Get all rows of a table, give filter (artist, album) to sort by, and/or order (title,date)
-function getAllBy(table, filter, id, order, limit, offset) {
-  if (!table) throw new Error(`Expected to get a string, got ${typeof table}`);
+// // Get all rows of a table, give filter (artist, album) to sort by, and/or order (title,date)
+// function getAllBy(table, filter, id, order, limit, offset) {
+//   if (!table) throw new Error(`Expected to get a string, got ${typeof table}`);
 
-  const endpoint = `/api/get_all/${table}?filter=${filter ? filter : ``}&id=${
-    id ? id : ``
-  }&order=${order ? order : ``}&limit=${limit ? limit : 10000000}&offset=${
-    offset ? offset : 0
-  }`;
-  const headers = { "Content-Type": "application/json" };
-  const config = {
-    method: "GET",
-    headers: headers,
-  };
+//   const endpoint = `/api/get_all/${table}?filter=${filter ? filter : ``}&id=${
+//     id ? id : ``
+//   }&order=${order ? order : ``}&limit=${limit ? limit : 10000000}&offset=${
+//     offset ? offset : 0
+//   }`;
+//   const headers = { "Content-Type": "application/json" };
+//   const config = {
+//     method: "GET",
+//     headers: headers,
+//   };
 
-  console.log(
-    `Sending ${config.method} All ${table} by ${filter}=${id} order: ${order} limit: ${limit} offset: ${offset} request to https://localhost:3001${endpoint}`
-  );
+//   console.log(
+//     `Sending ${config.method} All ${table} by ${filter}=${id} order: ${order} limit: ${limit} offset: ${offset} request to https://localhost:3001${endpoint}`
+//   );
 
-  return fetch(endpoint, config).then(async (res) => {
-    const data = await res.json();
-    if (res.ok) return data;
-    return Promise.reject(new Error(data));
-  });
-}
+//   return fetch(endpoint, config).then(async (res) => {
+//     const data = await res.json();
+//     if (res.ok) return data;
+//     return Promise.reject(new Error(data));
+//   });
+// }
 
 const getToken = () => {
   return localStorage.getItem("LIT");
@@ -191,5 +191,5 @@ function register(cardentials) {
   });
 }
 
-export { getAllBy, getFromDB, getSingleById, getAll, search, login, register };
+export { getFromDB, getSingleById, getAll, search, login, register };
 //will add post handling later

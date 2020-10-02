@@ -43,18 +43,6 @@ export default function TopMenu() {
     color: white;
   `;
 
-  const Profile = styled.span`
-    margin-left: auto;
-    margin-right: 3vw;
-    border-radius: 10px;
-
-    &:hover {
-      transition: 1s ease-in-out;
-      background-color: rgba(240, 240, 240, 0.85);
-      color: ${backgroundColor};
-    }
-  `;
-
   return (
     <TopMenu>
       <HomeButton>
@@ -77,10 +65,6 @@ export default function TopMenu() {
         </span>
       </NavButtons>
       <SearchBar />
-      {/* <Profile>
-        <ImUser fontSize="4vh" />
-        <span>Hello, User.</span>
-      </Profile> */}
       <UserMenu backgroundColor={backgroundColor} />
     </TopMenu>
   );
