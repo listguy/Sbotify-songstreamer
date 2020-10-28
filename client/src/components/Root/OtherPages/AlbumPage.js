@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { getFromDB } from "../wrapper";
+import { getFromDB } from "../services/wrapper";
 import SongList from "./components/SongList";
 import ArtistCircleWidg from "./components/ArtistCircleWidg";
+import { Mixpanel } from "../services/AnalyticsManager";
 import "./styles/AlbumPage.css";
 
 export default function AlbumPage() {
@@ -12,11 +13,11 @@ export default function AlbumPage() {
 
   useEffect(() => {
     getData(path);
+    Mixpanel.track("Path Change", { path: path });
   }, [path]);
 
   const getData = useCallback(async () => {
     const album = await getFromDB(`/albums/${albumId}`);
-    console.log(album);
     setData(album);
   });
 

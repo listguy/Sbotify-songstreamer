@@ -65,7 +65,6 @@ router.post("/", async (req, res) => {
     return artist;
   });
 
-  console.log(body);
   try {
     const newArtists = await Artist.bulkCreate(body, {
       fields: ["title", "media", "uploadedAt"],
@@ -73,7 +72,6 @@ router.post("/", async (req, res) => {
 
     res.json(newArtists);
   } catch (e) {
-    console.log(e);
     res.status(400).send({ msg: "Malformed data" });
   }
 });

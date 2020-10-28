@@ -16,7 +16,6 @@ router.get("/", async (req, res) => {
 
 router.get("/top", async (req, res) => {
   const limit = Number(req.query.limit) || 100000;
-  console.log(limit);
   const topAlbums = await Album.findAll({
     limit: limit,
     include: [
@@ -74,7 +73,6 @@ router.post("/", async (req, res) => {
     });
     res.json(newAlbum);
   } catch (e) {
-    console.log(e);
     res.status(400).send({ msg: "Malformed data" });
   }
 });

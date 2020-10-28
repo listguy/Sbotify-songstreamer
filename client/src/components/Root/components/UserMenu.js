@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ImUser } from "react-icons/im";
+import { Mixpanel } from "../services/AnalyticsManager";
 
 export default function UserMenu(props) {
   const [showMenu, setShowMenu] = useState(false);
@@ -52,6 +53,7 @@ export default function UserMenu(props) {
   };
 
   const logout = () => {
+    Mixpanel.track("Logout", { username: localStorage.getItem("loggedUser") });
     localStorage.removeItem("LIT");
     localStorage.removeItem("loggedUser");
     window.location = "/login";

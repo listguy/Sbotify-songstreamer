@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Thumbnail from "../Home/components/Thumbnail";
-import { getAll } from "../wrapper";
+import { Mixpanel } from "../services/AnalyticsManager";
+import { getAll } from "../services/wrapper";
 
 export default function AllOfType(props) {
   const [data, setData] = useState([]);
   const { type } = useParams();
   const legitPath = ["songs", "albums", "artists", "playlists"];
+  const path = useLocation().pathname;
 
   const fetchData = async (type) => {
     if (!legitPath.includes(type.toLowerCase()))
@@ -19,6 +21,7 @@ export default function AllOfType(props) {
 
   useEffect(() => {
     fetchData(type);
+    Mixpanel.track("Path Change", { path: path });
   }, [type]);
 
   const Grid = styled.div`

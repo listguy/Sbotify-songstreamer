@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { getFromDB } from "../wrapper";
+import { getFromDB } from "../services/wrapper";
 import ArtistCircleWidg from "./components/ArtistCircleWidg";
 import SongList from "./components/SongList";
+import { Mixpanel } from "../services/AnalyticsManager";
 import styled from "styled-components";
 
 export default function PlayListPage() {
@@ -12,6 +13,7 @@ export default function PlayListPage() {
 
   useEffect(() => {
     fetchData(path);
+    Mixpanel.track("Path Change", { path: path });
   }, []);
 
   const fetchData = async (path) => {
@@ -26,7 +28,7 @@ export default function PlayListPage() {
         ]).flat()
       ),
     ];
-    console.log(distinctDetails);
+
     let playlistArtists = [];
     for (let i = 0; i < distinctDetails.length - 2; i += 3) {
       playlistArtists.push([
@@ -82,7 +84,7 @@ export default function PlayListPage() {
       filter: brightness(1.3);
     }
   `;
-  console.log(data);
+
   return data ? (
     <Container id="pl-container">
       <TopStrip id="pl-top">

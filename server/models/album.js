@@ -12,8 +12,6 @@ module.exports = (sequelize, DataTypes) => {
       const allSongs = await this.getSongs({
         attributes: ["views"],
       });
-      console.log(allSongs);
-      console.log(Math.sum(...allSongs));
     }
     static associate(models) {
       // define association here

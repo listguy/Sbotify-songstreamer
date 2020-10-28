@@ -1,7 +1,8 @@
 import React, { useContext, useRef, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { UserContext } from "../userContext";
-import { login } from "../wrapper";
+import { login } from "../services/wrapper";
+import { Mixpanel } from "../services/AnalyticsManager";
 import styled from "styled-components";
 
 export default function Login() {
@@ -17,13 +18,13 @@ export default function Login() {
       username,
       password,
     });
-    console.log(response);
     if (response && response.success && response.token) {
       localStorage.setItem("LIT", response.token); //LIT = LogIn Token
       localStorage.setItem("loggedUser", username); //Current logged user
+      Mixpanel.identify(username);
+      Mixpanel.track("Login", { username: username });
       window.location = "/";
     } else {
-      console.log(response.msg);
       setError(response.msg);
     }
   };

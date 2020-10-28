@@ -81,7 +81,6 @@ router.post("/", async (req, res) => {
       fields: ["title", "media", "uploadedAt"],
     });
 
-    console.log(newPlaylists);
     const playlistSongs = newPlaylists.map((playlist, i) => {
       let curPlelistId = playlist.toJSON().id;
       let songList = body[i].songs.map((song) => {
@@ -98,7 +97,6 @@ router.post("/", async (req, res) => {
 
     res.json(newPlaylists);
   } catch (e) {
-    console.log(e);
     res.status(400).send({ msg: "Malformed data" });
   }
 });

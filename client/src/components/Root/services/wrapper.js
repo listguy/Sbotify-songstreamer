@@ -15,7 +15,6 @@ function getFromDB(endpoint) {
 
   return fetch(endpoint, config).then(async (res) => {
     const data = await res.json();
-    console.log(res);
     if (res.ok) return data;
     if (res.status === 403) {
       window.location = "/login";
@@ -71,11 +70,9 @@ function getSingleById(type, id) {
   );
 
   return fetch(`/${type}/${id}`, config).then(async (res) => {
-    console.log("wrapper here");
     const data = await res.json();
-    console.log(res);
+
     if (res.ok) {
-      console.log(data);
       return data;
     }
     if (res.status === 403) {
@@ -106,10 +103,8 @@ function getAll(type, order, limit) {
 
   return fetch("/" + path, config).then(async (res) => {
     const data = await res.json();
-    console.log(res);
 
     if (res.ok) {
-      console.log(data);
       return data;
     }
     if (res.status === 403) {
@@ -134,7 +129,6 @@ function search(query) {
   return fetch("/" + path, config).then(async (res) => {
     const data = await res.json();
     if (res.ok) {
-      console.log(data);
       return data;
     }
     return Promise.reject(new Error(data));
@@ -158,7 +152,7 @@ function login(cardentials) {
 
   return fetch(`/user/login`, config).then(async (res) => {
     const data = await res.json();
-    console.log(data);
+
     if (res.ok || res.status === 400) {
       return data;
     }
@@ -183,7 +177,7 @@ function register(cardentials) {
 
   return fetch(`/user/register`, config).then(async (res) => {
     const data = await res.json();
-    console.log(data);
+
     if (res.ok || res.status === 400) {
       return data;
     }

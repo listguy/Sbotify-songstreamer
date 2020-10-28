@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
-import { Redirect } from "react-router-dom";
-import { register } from "../wrapper";
+import { register } from "../services/wrapper";
+import { Mixpanel } from "../services/AnalyticsManager";
 import styled from "styled-components";
 
 export default function Register() {
@@ -13,19 +13,22 @@ export default function Register() {
     const username = userRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    console.log(
-      `username: ${username}, password: ${password}, email: ${email}`
-    );
+    // console.log(
+    //   `username: ${username}, password: ${password}, email: ${email}`
+    // );
     const response = await register({
       username,
       email,
       password,
     });
-    console.log(response);
+
     if (response && response.success) {
+      Mixpanel.identify(username);
+      Mixpanel.people.set({
+        $email: email,
+      });
       window.location = "/login";
     } else {
-      console.log(response.errors);
       setError(response.errors);
     }
   };
