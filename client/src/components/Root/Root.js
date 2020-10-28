@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   Redirect,
+  useHistory,
 } from "react-router-dom";
 import { UserContext } from "./userContext";
 import HomePage from "./Home";
@@ -30,8 +31,6 @@ export default function Root() {
     setLoggedUser,
   ]);
 
-  debugger;
-  console.log(loggedUser);
   return (
     <Router>
       <UserContext.Provider value={providerValue}>

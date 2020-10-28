@@ -18,7 +18,6 @@ export default function Carousela(props) {
     startIn = 0,
     options,
   } = props; //Template = how to show (a component that handles your data), data = what to show(array), count= How many to show(int), step = how many to slide
-  console.log(data);
   const maxStep = useMemo(() => data.length - count, [data]);
   const [curStep, setStep] = useState(clamp(startIn, 0, maxStep));
   const slide = (steps) => {

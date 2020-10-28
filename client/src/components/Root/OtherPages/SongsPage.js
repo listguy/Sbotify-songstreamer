@@ -3,8 +3,9 @@ import { useLocation, Link, useParams } from "react-router-dom";
 import Carousela from "../components/Carousela";
 import GridThumbNail from "./components/GridThumbNail";
 import ArtistCircleWidg from "./components/ArtistCircleWidg";
-import { getFromDB, getSingleById } from "../wrapper";
+import { getFromDB, getSingleById } from "../services/wrapper";
 import "./styles/SongPage.css";
+import { Mixpanel } from "../services/AnalyticsManager";
 
 export default function SongsPage() {
   // When trying to add following dummy data, code isn't working when coming from albums{
@@ -43,6 +44,8 @@ export default function SongsPage() {
 
   useEffect(() => {
     fetchData(curId, fromWhereQuery);
+    Mixpanel.track("Path Change", { path: path });
+    Mixpanel.track("View", { songId: curId });
   }, [path]);
 
   const fetchData = async (curId, fromWhereQuery) => {
@@ -63,6 +66,7 @@ export default function SongsPage() {
 
     setData({ song, suggestedSongs });
   };
+  console.log(data);
 
   return data ? (
     <div id="grid-container">

@@ -93,7 +93,6 @@ router.post("/", async (req, res) => {
     });
     res.json(newSong);
   } catch (e) {
-    console.log(e);
     res.status(400).send({ msg: "Malformed data" });
   }
 });

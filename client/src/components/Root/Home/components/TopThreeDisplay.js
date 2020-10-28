@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getFromDB } from "../../wrapper.js";
+import { getFromDB } from "../../services/wrapper";
 import Thumbnail from "./Thumbnail";
 import Carousela from "../../components/Carousela";
 import "../styles/TopThreeDisplay.css";

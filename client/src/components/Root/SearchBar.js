@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { search } from "./wrapper";
+import { search } from "./services/wrapper";
 import { IoMdMusicalNote } from "react-icons/io";
 import { MdAlbum } from "react-icons/md";
 import { GiMicrophone } from "react-icons/gi";

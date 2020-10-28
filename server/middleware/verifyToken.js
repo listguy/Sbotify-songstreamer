@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 //Authentication middleware
 function auth(req, res, next) {
   const token = req.header("auth-token");
-  console.log("trgigred " + token);
 
   if (!token)
     return res.json({

@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GiCrackedDisc } from "react-icons/gi";
+import { useLocation } from "react-router-dom";
+import { Mixpanel } from "../services/AnalyticsManager";
 import styled from "styled-components";
 
 export default function PageNotFound(props) {
@@ -14,6 +16,12 @@ export default function PageNotFound(props) {
       filter: brightness(1.25);
     }
   `;
+
+  const path = useLocation().pathname;
+
+  useEffect(() => {
+    Mixpanel.track("Path Change", { path: path });
+  });
 
   return (
     <>
