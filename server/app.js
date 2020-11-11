@@ -8,6 +8,7 @@ const albums = require("./routes/albums");
 const artists = require("./routes/artists");
 const playlists = require("./routes/playlists");
 const user = require("./routes/user");
+const searches = require("./routes/search");
 
 //Require auth middleware
 const tokenCheck = require("./middleware/verifyToken").auth;
@@ -24,6 +25,8 @@ app.use("/albums", tokenCheck, albums);
 app.use("/artists", tokenCheck, artists);
 
 app.use("/playlists", tokenCheck, playlists);
+
+app.use("/search", searches);
 
 app.get("/search", async (req, res) => {
   const { query } = req.query;
