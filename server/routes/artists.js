@@ -1,5 +1,6 @@
 const express = require("express");
 const { Song, Album, Artist } = require("../models");
+const { updateByInddexAndId } = require("../elasticsearch/index");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -78,14 +79,42 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const fields = req.body;
+  const artistId = req.params.id;
 
-  updatedArtist = await Artist.update(fields, {
-    where: {
-      id: req.params.id,
-    },
-    fields: ["title", "media"],
-  });
-  res.json({ sucsess: updatedArtist[0] === 1 });
+  try {
+    updatedArtist = await Artist.update(fields, {
+      where: {
+        id: artistId,
+      },
+      fields: ["title", "media"],
+    });
+
+    const elasticFieldsToUpdate = Object.entries(fields)
+      .filter(([key, value]) => ["title", "media"].includes(key))
+      .reduce((doc, [key, value]) => {
+        doc[key] = value;
+
+        return doc;
+      }, {});
+
+    console.log(elasticFieldsToUpdate);
+    if (Object.keys(elasticFieldsToUpdate)[0]) {
+      //get elastic id
+
+      const status = await updateByInddexAndId(
+        "artists",
+        artistId,
+        elasticFieldsToUpdate
+      );
+
+      if (status.success && updatedArtist[0] === 1)
+        return res.json({ sucsess: true });
+
+      return res.json({ success: false, msg: status.msg });
+    }
+  } catch (e) {
+    res.json({ success: false, msg: e }).status(500);
+  }
 });
 
 router.delete("/:id", async (req, res) => {

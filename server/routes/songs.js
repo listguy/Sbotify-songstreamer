@@ -1,7 +1,7 @@
 const express = require("express");
 const { Song, Album, Artist } = require("../models");
 const { Op } = require("sequelize");
-const { updateByInddexAndId } = require("../elasticsearch/index");
+const { client, updateByInddexAndId } = require("../elasticsearch/index");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -79,7 +79,7 @@ router.post("/", async (req, res) => {
   });
 
   try {
-    const newSong = await Song.create(req.body, {
+    const newSong = await Song.create(body, {
       fields: [
         "albumId",
         "artistId",
@@ -92,6 +92,23 @@ router.post("/", async (req, res) => {
         "uploadedAt",
       ],
     });
+
+    const created = newSong.dataValues;
+    client.index({
+      index: "songs",
+      body: {
+        id: created.id,
+        title: created.title,
+        media: created.media,
+        Artist: {
+          title: created.Artist.title,
+        },
+        Album: {
+          title: created.Album.title,
+        },
+      },
+    });
+
     res.json(newSong);
   } catch (e) {
     res.status(400).send({ msg: "Malformed data" });
@@ -136,54 +153,53 @@ router.put("/:id", async (req, res) => {
     if (Object.keys(elasticFieldsToUpdate)[0]) {
       //get elastic id
 
-      // const {
-      //   body: { hits: result },
-      // } = await client.search({
-      //   index: "songs",
-      //   body: {
-      //     query: {
-      //       match: {
-      //         id: {
-      //           query: songId,
-      //         },
-      //       },
-      //     },
-      //   },
-      // });
-      // // res.json(result);
-      // console.log(result.hits[0]._id);
-      // const elasticId = result.hits[0]._id;
-
-      // await client.update({
-      //   index: "songs",
-      //   id: elasticId,
-      //   body: {
-      //     doc: elasticFieldsToUpdate,
-      //     // {
-      //     //   title: "loko",
-      //     //   media: "moko",
-      //     //   Artist: { title: "koko" },
-      //     //   Album: { title: "coco" },
-      //     // },
-      //   },
-      // });
       const status = await updateByInddexAndId(
         "songs",
         songId,
         elasticFieldsToUpdate
       );
-      // const updated = await client.get({
-      //   index: "songs",
-      //   id: elasticId,
-      // });
-      // res.json(success);
-      // res.json(updated);
-      console.log(updatedSong);
-      res.json({ sucsess: updatedSong[0] === 1 && status.success });
+
+      if (updatedSong[0] === 1 && status.success)
+        return res.json({ sucsess: true });
+
+      return res.json({ sucsess: false, e: status.msg });
     }
   } catch (e) {
     res.json({ success: false }).status(500);
   }
+  //#region delete later
+  // const {
+  //   body: { hits: result },
+  // } = await client.search({
+  //   index: "songs",
+  //   body: {
+  //     query: {
+  //       match: {
+  //         id: {
+  //           query: songId,
+  //         },
+  //       },
+  //     },
+  //   },
+  // });
+  // // res.json(result);
+  // console.log(result.hits[0]._id);
+  // const elasticId = result.hits[0]._id;
+
+  // await client.update({
+  //   index: "songs",
+  //   id: elasticId,
+  //   body: {
+  //     doc: elasticFieldsToUpdate,
+  //     // {
+  //     //   title: "loko",
+  //     //   media: "moko",
+  //     //   Artist: { title: "koko" },
+  //     //   Album: { title: "coco" },
+  //     // },
+  //   },
+  // });
+  //#endregion
 });
 
 router.delete("/:id", async (req, res) => {

@@ -30,7 +30,8 @@ router.get("/:index", async (req, res) => {
       body: { hits: results },
     } = await queryFromElastic([req.params.index], req.query.search);
 
-    if (results.hits[0]) return res.json(results.hits);
+    if (results.hits[0])
+      return res.json(results.hits.map((hit) => hit._source));
     return res.send("No results").status(404);
   } catch (e) {
     res.send(e);
@@ -46,7 +47,8 @@ router.get("/", async (req, res) => {
       ["songs", "albums", "artists", "playlists"],
       req.query.search
     );
-    if (results.hits[0]) return res.json(results.hits);
+    if (results.hits[0])
+      return res.json(results.hits.map((hit) => hit._source));
     return res.send("No results").status(404);
   } catch (e) {
     res.send(e);

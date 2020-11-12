@@ -41,5 +41,5 @@ const updateByInddexAndId = async (index, id, body) => {
   }
 };
 
-module.exports = client;
+module.exports.client = client;
 module.exports.updateByInddexAndId = updateByInddexAndId;

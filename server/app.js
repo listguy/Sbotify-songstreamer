@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use("/user", user);
 
-app.use("/songs", songs); //Use songs.js file to handle /songs entrypoints.
+app.use("/songs", tokenCheck, songs); //Use songs.js file to handle /songs entrypoints.
 
 app.use("/albums", tokenCheck, albums);
 
