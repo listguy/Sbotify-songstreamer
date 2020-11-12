@@ -1,6 +1,7 @@
 const express = require("express");
 const { Song, Album, Artist } = require("../models");
 const { Op } = require("sequelize");
+const { updateByInddexAndId } = require("../elasticsearch/index");
 let router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -99,24 +100,90 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const fields = req.body;
+  const songId = req.params.id;
 
-  updatedSong = await Song.update(fields, {
-    where: {
-      id: req.params.id,
-    },
-    fields: [
-      "title",
-      "media",
-      "artist_id",
-      "album_id",
-      "track_number",
-      "length",
-      "lyrics",
-      "views",
-    ],
-  });
+  try {
+    updatedSong = await Song.update(fields, {
+      where: {
+        id: songId,
+      },
+      fields: [
+        "title",
+        "media",
+        "artist_id",
+        "album_id",
+        "track_number",
+        "length",
+        "lyrics",
+        "views",
+      ],
+    });
 
-  res.json({ sucsess: updatedSong === 1 });
+    //body of the elastic search update doc
+    const elasticFieldsToUpdate = Object.entries(fields)
+      .filter(([key, value]) =>
+        ["title", "media", "Artist", "Album"].includes(key)
+      )
+      .reduce((doc, [key, value]) => {
+        if (["Artist", "Album"].includes(key)) {
+          doc[key] = { title: value };
+        } else {
+          doc[key] = value;
+        }
+        return doc;
+      }, {});
+
+    if (Object.keys(elasticFieldsToUpdate)[0]) {
+      //get elastic id
+
+      // const {
+      //   body: { hits: result },
+      // } = await client.search({
+      //   index: "songs",
+      //   body: {
+      //     query: {
+      //       match: {
+      //         id: {
+      //           query: songId,
+      //         },
+      //       },
+      //     },
+      //   },
+      // });
+      // // res.json(result);
+      // console.log(result.hits[0]._id);
+      // const elasticId = result.hits[0]._id;
+
+      // await client.update({
+      //   index: "songs",
+      //   id: elasticId,
+      //   body: {
+      //     doc: elasticFieldsToUpdate,
+      //     // {
+      //     //   title: "loko",
+      //     //   media: "moko",
+      //     //   Artist: { title: "koko" },
+      //     //   Album: { title: "coco" },
+      //     // },
+      //   },
+      // });
+      const status = await updateByInddexAndId(
+        "songs",
+        songId,
+        elasticFieldsToUpdate
+      );
+      // const updated = await client.get({
+      //   index: "songs",
+      //   id: elasticId,
+      // });
+      // res.json(success);
+      // res.json(updated);
+      console.log(updatedSong);
+      res.json({ sucsess: updatedSong[0] === 1 && status.success });
+    }
+  } catch (e) {
+    res.json({ success: false }).status(500);
+  }
 });
 
 router.delete("/:id", async (req, res) => {

@@ -1,15 +1,28 @@
 const express = require("express");
 const router = express.Router();
 
-const { Client } = require("@elastic/elasticsearch");
-const client = new Client({
-  cloud: { id: process.env.ELASTIC_ID },
-  auth: {
-    username: process.env.ELASTIC_USERNAME,
-    password: process.env.ELASTIC_PASSWORD,
-  },
-});
+const client = require("../elasticsearch/index");
 const searchResponseMaxSize = 20;
+
+// router.get("/update", async (req, res) => {
+//   try {
+//     const results = await client.search({
+//       index: "artists",
+//       body: {
+//         query: {
+//           match: {
+//             id: {
+//               query: 6,
+//             },
+//           },
+//         },
+//       },
+//     });
+//     res.json(results);
+//   } catch (e) {
+//     res.send(e);
+//   }
+// });
 
 router.get("/:index", async (req, res) => {
   try {
@@ -103,3 +116,4 @@ function queryFromElastic(indexes, userQuery) {
 // });
 
 module.exports = router;
+// module.exports = client; //export connection
