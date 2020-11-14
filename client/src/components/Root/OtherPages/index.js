@@ -6,6 +6,7 @@ import PageNotFound from "./PageNotFound";
 import ALlOfPage from "./AllOfType";
 import Login from "./Login";
 import Register from "./Register";
+import ElasticSearchPage from "./ElasticSearchPage";
 
 export {
   AlbumPage,
@@ -16,4 +17,5 @@ export {
   ALlOfPage,
   Login,
   Register,
+  ElasticSearchPage,
 };

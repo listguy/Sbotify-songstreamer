@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const client = require("../elasticsearch/index");
-const searchResponseMaxSize = 20;
+const { client } = require("../elasticsearch/index");
 
 // router.get("/update", async (req, res) => {
 //   try {
@@ -25,69 +24,96 @@ const searchResponseMaxSize = 20;
 // });
 
 router.get("/:index", async (req, res) => {
+  console.log(req.params.index);
   try {
     const {
       body: { hits: results },
     } = await queryFromElastic([req.params.index], req.query.search);
 
+    console.log(results);
     if (results.hits[0])
-      return res.json(results.hits.map((hit) => hit._source));
-    return res.send("No results").status(404);
+      res.json({
+        success: true,
+        content: [
+          results.hits.map((hit) => {
+            return {
+              data: hit._source,
+              type: hit._type,
+            };
+          }),
+        ],
+      });
+    return res.json({ success: false, msg: "No results" }).status(404);
   } catch (e) {
-    res.send(e);
+    res.json({ success: false, msg: e.toString() });
   }
   //   res.json(results.body.hits.hits);
 });
 
 router.get("/", async (req, res) => {
+  const searchQuery = req.query.search;
   try {
-    const {
-      body: { hits: results },
-    } = await queryFromElastic(
-      ["songs", "albums", "artists", "playlists"],
-      req.query.search
+    const results = await Promise.all(
+      ["songs", "albums", "artists", "playlists"].map((index) =>
+        queryFromElastic(index, searchQuery, 3)
+      )
     );
-    if (results.hits[0])
-      return res.json(results.hits.map((hit) => hit._source));
-    return res.send("No results").status(404);
+    res.json({
+      success: true,
+      content: results.map((res) =>
+        res.body.hits.hits.map((hit) => {
+          return {
+            data: hit._source,
+            type: hit._type,
+          };
+        })
+      ),
+    });
   } catch (e) {
-    res.send(e);
+    res.json({ success: false, msg: e.toString() });
   }
 });
 
-router.get("/albums", async (req, res) => {
-  const results = await queryFromElastic(["albums"]);
-  res.json(results.body.hits.hits);
-});
+// router.get("/albums", async (req, res) => {
+//   const results = await queryFromElastic(["albums"]);
+//   res.json(results.body.hits.hits);
+// });
 
-router.get("/artists", async (req, res) => {
-  const results = await queryFromElastic(["artists"]);
-  res.json(results.body.hits.hits);
-});
+// router.get("/artists", async (req, res) => {
+//   const results = await queryFromElastic(["artists"]);
+//   res.json(results.body.hits.hits);
+// });
 
-router.get("/playlists", async (req, res) => {
-  const results = await queryFromElastic(["playlists"]);
-  res.json(results.body.hits.hits);
-});
+// router.get("/playlists", async (req, res) => {
+//   const results = await queryFromElastic(["playlists"]);
+//   res.json(results.body.hits.hits);
+// });
 
-function queryFromElastic(indexes, userQuery) {
-  return client.search({
-    index: indexes,
-    body: {
-      query: {
-        regexp: {
-          title: {
-            value: `.*${userQuery}.*`,
-            flags: "all",
-            // sensitive: true,
-            // max_determinized_states: 10000,
-            // rewrite: "constant_score",
+function queryFromElastic(indexes, userQuery, size = 20) {
+  try {
+    console.log(userQuery.split(" ").join("* "));
+    return client.search({
+      index: indexes,
+      body: {
+        query: {
+          regexp: {
+            title: {
+              value: `.*${userQuery}.*`,
+              flags: "all",
+              // sensitive: true,
+              // max_determinized_states: 10000,
+              // rewrite: "constant_score",
+              // operator: "or",
+              // minimum_should_match: 1,
+            },
           },
         },
       },
-    },
-    size: searchResponseMaxSize,
-  });
+      size: size,
+    });
+  } catch (e) {
+    return res.json({ success: false, msg: e.toString() });
+  }
 }
 
 // router.get("/playlist", async (req, res) => {

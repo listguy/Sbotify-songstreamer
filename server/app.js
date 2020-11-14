@@ -28,29 +28,30 @@ app.use("/playlists", tokenCheck, playlists);
 
 app.use("/search", searches);
 
-app.get("/search", async (req, res) => {
-  const { query } = req.query;
-  const options = {
-    attributes: ["id", "title"],
-    where: {
-      title: {
-        [Op.regexp]: `^${query}`,
-      },
-    },
-  };
-  const types = ["artist", "album", "song", "playlist"];
-  const matchedResults = await Promise.all([
-    Artist.findAll(options),
-    Album.findAll(options),
-    Song.findAll(options),
-    Playlist.findAll(options),
-  ]);
+//Deprecated for now
+// app.get("/search", async (req, res) => {
+//   const { query } = req.query;
+//   const options = {
+//     attributes: ["id", "title"],
+//     where: {
+//       title: {
+//         [Op.regexp]: `^${query}`,
+//       },
+//     },
+//   };
+//   const types = ["artist", "album", "song", "playlist"];
+//   const matchedResults = await Promise.all([
+//     Artist.findAll(options),
+//     Album.findAll(options),
+//     Song.findAll(options),
+//     Playlist.findAll(options),
+//   ]);
 
-  matchedResults.map((matchedArr, i) =>
-    matchedArr.map((result) => (result.dataValues.type = types[i])).flat()
-  );
+//   matchedResults.map((matchedArr, i) =>
+//     matchedArr.map((result) => (result.dataValues.type = types[i])).flat()
+//   );
 
-  res.json(matchedResults.flat());
-});
+//   res.json(matchedResults.flat());
+// });
 
 module.exports = app;

@@ -18,6 +18,7 @@ import {
   PageNotFound,
   ALlOfPage,
   Login,
+  ElasticSearchPage,
 } from "./OtherPages";
 import Register from "./OtherPages/Register";
 
@@ -47,6 +48,7 @@ export default function Root() {
             <TopMenu />
             <Switch>
               <Route component={HomePage} exact path="/" />
+              <Route component={ElasticSearchPage} exact path="/search" />
               <Route component={ALlOfPage} exact path="/:type" />
               <Route component={SongsPage} exact path="/songs/:id" />
               <Route component={AlbumPage} exact path="/albums/:id" />

@@ -184,6 +184,35 @@ function register(cardentials) {
     return Promise.reject(new Error(data));
   });
 }
+function searchElastic(query, specificIndex) {
+  const headers = { "Content-Type": "application/json" };
+  const config = {
+    method: "GET",
+    headers: headers,
+  };
+  const index = specificIndex ? `/${specificIndex}` : "";
+  const path = `search${index}?search=${query}`;
 
-export { getFromDB, getSingleById, getAll, search, login, register };
+  console.log(
+    `Sending search elastic ${config.method} request to https://localhost:3001/${path}`
+  );
+
+  return fetch("/" + path, config).then(async (res) => {
+    const data = await res.json();
+    if (res.ok) {
+      return data;
+    }
+    return Promise.reject(new Error(data));
+  });
+}
+
+export {
+  getFromDB,
+  getSingleById,
+  getAll,
+  search,
+  login,
+  register,
+  searchElastic,
+};
 //will add post handling later
