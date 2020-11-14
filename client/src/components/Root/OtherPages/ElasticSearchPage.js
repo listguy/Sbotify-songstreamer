@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { searchElastic } from "../services/wrapper";
 import { Link } from "react-router-dom";
+import { IoMdMusicalNote } from "react-icons/io";
+import { MdAlbum } from "react-icons/md";
+import { GiMicrophone } from "react-icons/gi";
+import { RiPlayListFill } from "react-icons/ri";
 // import {} from "../services/wrapper";
 
 const ResultsBox = styled.div`
   background-color: rgba(0, 0, 0, 0.58);
-  height: 70vh;
-  overflow-y: scroll;
+  height: 65vh;
+  padding: 2vh 3vw;
+  overflow-y: auto;
 `;
 const RowResult = styled.div`
   background-color: rgba(30, 35, 32, 0.7);
@@ -36,12 +41,47 @@ const Details = styled.div`
   flex-direction: column;
 `;
 
+const StyledButtons = styled.span`
+  cursor: pointer;
+  padding: 8px;
+  transition: 0.3s;
+
+  :hover {
+    background-color: rgba(250, 250, 250, 0.3);
+  }
+`;
+
+const SearchBar = styled.input`
+  background-color: rgba(0, 0, 0, 0.88);
+  display: block;
+  width: 76%;
+  height: 4vh;
+  margin: 2vh auto;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 1.5em;
+  border: none;
+  color: wheat;
+
+  :focus {
+    outline: none;
+  }
+`;
+
+const icons = {
+  song: <IoMdMusicalNote />,
+  album: <MdAlbum />,
+  artist: <GiMicrophone />,
+  playlist: <RiPlayListFill />,
+};
+
 export default function ElasticSearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [index, setIndex] = useState("");
   const [results, setResults] = useState();
 
   const elasticSearch = async () => {
+    if (searchQuery === "") return;
     let size = index ? 3 : 100;
     const { content } = await searchElastic(searchQuery, index, size);
     // if (content.every((results) => !results[0]))
@@ -54,18 +94,24 @@ export default function ElasticSearchPage() {
     elasticSearch();
   }, [index, searchQuery]);
 
-  console.log(index);
-  console.log(results);
   return (
     <div>
-      <h1>Search</h1>
-      <input label="Search" onChange={(e) => setSearchQuery(e.target.value)} />
+      <h1 style={{ marginLeft: "2vw" }}>Search</h1>
+      <SearchBar
+        label="Search"
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search..."
+      />
       <ResultsBox>
         {searchQuery !== ""
           ? results?.map((results) => {
               return results[0] ? (
                 <>
-                  {index && <span onClick={() => setIndex("")}>Back</span>}
+                  {index && (
+                    <StyledButtons onClick={() => setIndex("")}>
+                      Back
+                    </StyledButtons>
+                  )}
                   <h2>
                     {results[0].type.slice(0, 1).toUpperCase() +
                       results[0].type.slice(1)}
@@ -85,7 +131,9 @@ export default function ElasticSearchPage() {
                             }
                           />
                           <Details>
-                            <h3>{hit.data.title}</h3>
+                            <h3 style={{ fontSize: "1.2em" }}>
+                              {hit.data.title} {icons[hit.type]}
+                            </h3>
                             <span>
                               <b>{hit.data.Album?.title}</b>{" "}
                               {hit.data.Artist?.title}
@@ -96,9 +144,11 @@ export default function ElasticSearchPage() {
                     );
                   })}
                   {!index && (
-                    <span onClick={() => setIndex(`${results[0].type}s`)}>
+                    <StyledButtons
+                      onClick={() => setIndex(`${results[0].type}s`)}
+                    >
                       Show All..
-                    </span>
+                    </StyledButtons>
                   )}
                 </>
               ) : null;

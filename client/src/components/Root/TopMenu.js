@@ -29,8 +29,8 @@ export default function TopMenu() {
       margin: 0 1vh;
       font-size: 2.5vh;
       border-radius: 5px;
+      transition: 0.5s ease-in-out;
       &:hover {
-        transition: 1s ease-in-out;
         background-color: rgba(230, 230, 230, 0.8);
         color: black;
       }
@@ -39,8 +39,12 @@ export default function TopMenu() {
 
   const HomeButton = styled.span`
     font-size: 6vh;
-    margin: 0 10vw 0 1vw;
+    margin: 0 8vw 0 1vw;
     color: white;
+    transition: 0.2s;
+    :hover {
+      filter: brightness(0.85);
+    }
   `;
 
   return (
@@ -62,6 +66,9 @@ export default function TopMenu() {
         </span>
         <span>
           <Link to="/playlists">Playlists</Link>
+        </span>
+        <span>
+          <Link to="/search">Search</Link>
         </span>
       </NavButtons>
       <SearchBar />

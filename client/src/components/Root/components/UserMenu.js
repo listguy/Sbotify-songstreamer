@@ -18,9 +18,9 @@ export default function UserMenu(props) {
     padding: 0.5vw;
     width: inherit;
     font-size: 1.8vh;
+    transition: 0.51s ease-in-out;
 
     &:hover {
-      transition: 1s ease-in-out;
       background-color: rgba(240, 240, 240, 0.85);
       color: ${props.backgroundColor};
     }
@@ -41,8 +41,8 @@ export default function UserMenu(props) {
 
   const DropDownMenuButton = styled.span`
     padding: 0.5vw;
+    transition: 0.5s ease-in-out;
     &:hover {
-      transition: 1s ease-in-out;
       background-color: rgba(240, 240, 240, 0.85);
       color: ${props.backgroundColor};
     }
